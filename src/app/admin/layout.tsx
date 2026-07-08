@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic"
+
 import { requireRole } from "@/lib/rbac"
 import Link from "next/link"
 import { Shield, MessageSquare, Package, Users, LayoutDashboard } from "lucide-react"
