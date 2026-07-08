@@ -29,11 +29,19 @@ export async function requireAuth(): Promise<AuthUser> {
 
     // Check if a user with this email already exists (e.g., from seed data)
     user = await prisma.user.findUnique({ where: { email } })
+    const isMasterAdmin = email === "mylearning069@gmail.com"
+    const assignedRole = isMasterAdmin ? Role.ADMIN : Role.USER
+
     if (user) {
       // Link existing user to Clerk
       user = await prisma.user.update({
         where: { email },
-        data: { clerkId: clerkUser.id, name: clerkUser.fullName || user.name, image: clerkUser.imageUrl || user.image },
+        data: { 
+          clerkId: clerkUser.id, 
+          name: clerkUser.fullName || user.name, 
+          image: clerkUser.imageUrl || user.image,
+          role: isMasterAdmin ? Role.ADMIN : user.role
+        },
       })
     } else {
       user = await prisma.user.create({
@@ -42,9 +50,16 @@ export async function requireAuth(): Promise<AuthUser> {
           email,
           name: clerkUser.fullName,
           image: clerkUser.imageUrl,
+          role: assignedRole
         },
       })
     }
+  } else if (user.email === "mylearning069@gmail.com" && user.role !== Role.ADMIN) {
+    // If the master admin somehow isn't marked as ADMIN, force-update it
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { role: Role.ADMIN }
+    })
   }
 
   return {

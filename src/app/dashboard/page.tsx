@@ -5,8 +5,18 @@ import { ProductCard } from "@/components/product-card"
 import Link from "next/link"
 import { Star, Bookmark, MessageSquare, TrendingUp } from "lucide-react"
 
+import { redirect } from "next/navigation"
+
 export default async function DashboardPage() {
   const user = await requireAuth()
+
+  if (user.role === "ADMIN") {
+    redirect("/admin")
+  }
+
+  if (user.role === "PUBLISHER") {
+    redirect("/publisher")
+  }
 
   const reviews = await prisma.review.findMany({
     where: { userId: user.id },

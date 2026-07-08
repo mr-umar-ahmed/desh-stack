@@ -31,23 +31,9 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
 
-  // Check onboarding status
+  // Onboarding flow bypassed for streamlined user experience
   const authSession = await auth()
-  const { userId, sessionClaims } = authSession
-
-  if (userId) {
-    const isOnboarding = req.nextUrl.pathname === "/onboarding"
-    const isApiRoute = req.nextUrl.pathname.startsWith("/api")
-    const isStatic = req.nextUrl.pathname.includes(".") // very basic static check
-    
-    if (!isOnboarding && !isApiRoute && !isStatic) {
-      const onboardingCookie = req.cookies.get(`onboarding_${userId}`)
-      if (!onboardingCookie) {
-        const url = new URL("/onboarding", req.url)
-        return NextResponse.redirect(url)
-      }
-    }
-  }
+  const { userId } = authSession
 
   // Protect routes that require authentication
   if (isProtectedRoute(req)) {
