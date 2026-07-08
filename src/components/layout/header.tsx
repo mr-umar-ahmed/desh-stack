@@ -6,14 +6,22 @@ import { Search, Menu, X, Shield, Building2, LayoutDashboard } from "lucide-reac
 import { SearchInput } from "@/components/SearchInput"
 
 export async function Header() {
-  const clerkUser = await currentUser()
+  let clerkUser = null
   let role = null
+
+  try {
+    clerkUser = await currentUser()
+  } catch (error) {
+    console.error("Clerk auth error (check CLERK_SECRET_KEY):", error)
+  }
   
   if (clerkUser) {
     try {
       const user = await prisma.user.findUnique({ where: { clerkId: clerkUser.id } })
       role = user?.role || null
-    } catch {}
+    } catch (error) {
+      console.error("Database connection error (check DATABASE_URL):", error)
+    }
   }
 
   return (
