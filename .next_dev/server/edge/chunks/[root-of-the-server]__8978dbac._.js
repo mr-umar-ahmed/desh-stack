@@ -14,7 +14,7 @@ module.exports = mod;
 "[project]/src/middleware.ts [middleware-edge] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-__turbopack_context__.s([
+/* eslint-disable */ __turbopack_context__.s([
     "config",
     ()=>config,
     "default",

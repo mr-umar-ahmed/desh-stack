@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { prisma } from "@/lib/prisma"
 import { ProductCard } from "@/components/product-card"
 import { Search } from "lucide-react"

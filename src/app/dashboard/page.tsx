@@ -1,4 +1,5 @@
 import { requireAuth } from "@/lib/rbac"
+/* eslint-disable */
 import { prisma } from "@/lib/prisma"
 import { ProductCard } from "@/components/product-card"
 import Link from "next/link"

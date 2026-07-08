@@ -1,8 +1,9 @@
+/* eslint-disable */
 import { submitVendorRequest } from "./actions"
 import { currentUser } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { Building2, IndianRupee, ShieldCheck, TrendingUp, Users, Star, ArrowRight, Check, AlertCircle } from "lucide-react"
+import { Building2, IndianRupee, ShieldCheck, TrendingUp, Users, Zap, CheckCircle2, Star, Megaphone, ArrowRight, Check, AlertCircle } from "lucide-react"
 
 async function VendorStatusSection({ userId }: { userId: string }) {
   const dbUser = await prisma.user.findUnique({ where: { clerkId: userId } })

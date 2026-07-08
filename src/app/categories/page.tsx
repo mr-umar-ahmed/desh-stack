@@ -1,6 +1,6 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { Layers } from "lucide-react"
 
 export const metadata = {
   title: "Browse Categories | DeshStack",

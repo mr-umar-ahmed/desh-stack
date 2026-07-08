@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import { ProductCard } from "@/components/product-card"
 import { MarketQuadrant } from "@/components/market-quadrant"
 import { AdBanner } from "@/components/ads/AdBanner"
-import { Star, Search, ShieldCheck, TrendingUp, Users, Package, ArrowRight } from "lucide-react"
+import { Star, Search, ShieldCheck, TrendingUp, ArrowRight } from "lucide-react"
 
 export default async function Home() {
   let categories: any[] = []

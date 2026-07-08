@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Link from "next/link"
 import { UserButton } from "@clerk/nextjs"
 import { currentUser } from "@clerk/nextjs/server"

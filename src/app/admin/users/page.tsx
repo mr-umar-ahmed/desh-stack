@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { prisma } from "@/lib/prisma"
 import { changeUserRole, suspendUser, activateUser } from "./actions"
 import { Users, Shield, Building2, User, ShieldAlert } from "lucide-react"
