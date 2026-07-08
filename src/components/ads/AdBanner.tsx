@@ -17,6 +17,8 @@ export function AdBanner() {
   const [isVisible, setIsVisible] = useState(true)
   const [isPaused, setIsPaused] = useState(false)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [adBlocked, setAdBlocked] = useState(false)
+  
   const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
 
   const ads = sponsoredProducts
@@ -39,15 +41,15 @@ export function AdBanner() {
   }, [ads.length])
 
   useEffect(() => {
-    if (isPaused || !isVisible || hasAdSense) return
+    if (isPaused || !isVisible || (hasAdSense && !adBlocked)) return
     const interval = setInterval(goToNext, 5000)
     return () => clearInterval(interval)
-  }, [isPaused, isVisible, goToNext, hasAdSense])
+  }, [isPaused, isVisible, goToNext, hasAdSense, adBlocked])
 
   if (!isVisible) return null
 
   // ──── Google AdSense Mode ────
-  if (hasAdSense) {
+  if (hasAdSense && !adBlocked) {
     return (
       <section className="relative w-full border-y border-indigo/8 bg-gradient-to-r from-indigo/[0.02] via-transparent to-indigo/[0.02]">
         <div className="container mx-auto px-4 md:px-6 py-2">
@@ -63,6 +65,7 @@ export function AdBanner() {
                 format="horizontal"
                 responsive
                 style={{ minHeight: "60px", maxHeight: "100px" }}
+                onAdBlock={() => setAdBlocked(true)}
               />
             </div>
             <button

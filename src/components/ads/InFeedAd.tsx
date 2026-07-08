@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react"
 
 import { GoogleAd } from "./GoogleAd"
 import { Megaphone } from "lucide-react"
@@ -11,9 +12,10 @@ import { Megaphone } from "lucide-react"
  * Only renders when AdSense is configured.
  */
 export function InFeedAd() {
+  const [adBlocked, setAdBlocked] = useState(false)
   const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
 
-  if (!hasAdSense) return null
+  if (!hasAdSense || adBlocked) return null
 
   return (
     <div className="relative flex flex-col rounded-2xl border border-indigo/8 bg-white p-4 shadow-sm overflow-hidden">
@@ -31,6 +33,7 @@ export function InFeedAd() {
           format="auto"
           responsive
           style={{ minHeight: "200px" }}
+          onAdBlock={() => setAdBlocked(true)}
         />
       </div>
 

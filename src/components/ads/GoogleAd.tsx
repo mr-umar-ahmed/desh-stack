@@ -30,6 +30,10 @@ interface GoogleAdProps {
    * Fixed height style for the ad container (e.g., "90px", "250px")
    */
   style?: React.CSSProperties
+  /**
+   * Callback fired if the ad is blocked by an adblocker or remains unfilled
+   */
+  onAdBlock?: () => void
 }
 
 export function GoogleAd({
@@ -38,6 +42,7 @@ export function GoogleAd({
   responsive = true,
   className = "",
   style,
+  onAdBlock,
 }: GoogleAdProps) {
   const adRef = useRef<HTMLModElement>(null)
   const isAdLoaded = useRef(false)
@@ -47,14 +52,28 @@ export function GoogleAd({
   useEffect(() => {
     if (!pubId || isAdLoaded.current) return
 
+    let timeoutId: NodeJS.Timeout
+
     try {
       const adsbygoogle = window.adsbygoogle || []
       adsbygoogle.push({})
       isAdLoaded.current = true
+      
+      timeoutId = setTimeout(() => {
+        if (adRef.current) {
+          const status = adRef.current.getAttribute("data-ad-status")
+          if (status === "unfilled" || adRef.current.clientHeight === 0) {
+            onAdBlock?.()
+          }
+        }
+      }, 1500)
     } catch (err) {
       console.error("AdSense error:", err)
+      onAdBlock?.()
     }
-  }, [pubId])
+    
+    return () => clearTimeout(timeoutId)
+  }, [pubId, onAdBlock])
 
   if (!pubId) return null
 

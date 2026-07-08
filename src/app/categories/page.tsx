@@ -8,12 +8,18 @@ export const metadata = {
 }
 
 export default async function CategoriesPage() {
-  const categories = await prisma.category.findMany({
-    orderBy: { name: "asc" },
-    include: {
-      _count: { select: { products: true } },
-    },
-  })
+  let categories: any[] = []
+  
+  try {
+    categories = await prisma.category.findMany({
+      orderBy: { name: "asc" },
+      include: {
+        _count: { select: { products: true } },
+      },
+    })
+  } catch (error) {
+    console.error("Database error in categories page:", error)
+  }
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 animate-fade-in">

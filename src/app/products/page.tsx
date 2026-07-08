@@ -17,25 +17,33 @@ export default async function ProductsPage({
   const categoryFilter = params.category || ""
   const sortBy = params.sort || "rating"
 
-  const products = await prisma.product.findMany({
-    where: {
-      status: "APPROVED",
-      ...(query ? { name: { contains: query, mode: "insensitive" } } : {}),
-      ...(categoryFilter ? { category: { slug: categoryFilter } } : {}),
-    },
-    include: {
-      reviews: { select: { overallRating: true } },
-      category: { select: { name: true, slug: true } },
-    },
-    orderBy: sortBy === "newest" ? { createdAt: "desc" } : { name: "asc" },
-  })
+  let products: any[] = []
+  let categories: any[] = []
+
+  try {
+    products = await prisma.product.findMany({
+      where: {
+        status: "APPROVED",
+        ...(query ? { name: { contains: query, mode: "insensitive" } } : {}),
+        ...(categoryFilter ? { category: { slug: categoryFilter } } : {}),
+      },
+      include: {
+        reviews: { select: { overallRating: true } },
+        category: { select: { name: true, slug: true } },
+      },
+      orderBy: sortBy === "newest" ? { createdAt: "desc" } : { name: "asc" },
+    })
+    categories = await prisma.category.findMany({ orderBy: { name: "asc" } })
+  } catch (error) {
+    console.error("Database error in products page:", error)
+  }
 
   const enrichedProducts = products
     .map((product) => {
       const reviewCount = product.reviews.length
       const averageRating =
         reviewCount > 0
-          ? product.reviews.reduce((acc, rev) => acc + rev.overallRating, 0) / reviewCount
+          ? product.reviews.reduce((acc: any, rev: any) => acc + rev.overallRating, 0) / reviewCount
           : 0
       return { ...product, reviewCount, averageRating }
     })
@@ -44,8 +52,6 @@ export default async function ProductsPage({
       if (sortBy === "reviews") return b.reviewCount - a.reviewCount
       return 0
     })
-
-  const categories = await prisma.category.findMany({ orderBy: { name: "asc" } })
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12 animate-fade-in">

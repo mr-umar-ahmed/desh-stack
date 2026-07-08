@@ -17,18 +17,24 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
   const resolvedParams = await params
   const { slug } = resolvedParams
 
-  const category = await prisma.category.findUnique({
-    where: { slug },
-    include: {
-      products: {
-        include: {
-          reviews: {
-            select: { overallRating: true }
+  let category: any = null
+
+  try {
+    category = await prisma.category.findUnique({
+      where: { slug },
+      include: {
+        products: {
+          include: {
+            reviews: {
+              select: { overallRating: true }
+            }
           }
         }
       }
-    }
-  })
+    })
+  } catch (error) {
+    console.error("Database error in category page:", error)
+  }
 
   if (!category) {
     notFound()

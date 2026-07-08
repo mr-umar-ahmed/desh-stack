@@ -15,13 +15,14 @@ import { Megaphone, ExternalLink, Sparkles } from "lucide-react"
 export function SidebarAd() {
   const [adIndex, setAdIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
+  const [adBlocked, setAdBlocked] = useState(false)
   const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
 
   const ads = sponsoredProducts
   const ad = ads[adIndex]
 
   useEffect(() => {
-    if (hasAdSense) return
+    if (hasAdSense && !adBlocked) return
     // Rotate every 12 seconds (slower than banner since it's persistent)
     const interval = setInterval(() => {
       setIsAnimating(true)
@@ -31,10 +32,10 @@ export function SidebarAd() {
       }, 300)
     }, 12000)
     return () => clearInterval(interval)
-  }, [ads.length, hasAdSense])
+  }, [ads.length, hasAdSense, adBlocked])
 
   // ──── Google AdSense Mode ────
-  if (hasAdSense) {
+  if (hasAdSense && !adBlocked) {
     return (
       <div className="sticky top-24">
         <div className="rounded-2xl border border-indigo/8 bg-white overflow-hidden shadow-sm">
@@ -53,6 +54,7 @@ export function SidebarAd() {
               format="rectangle"
               responsive
               style={{ minHeight: "250px" }}
+              onAdBlock={() => setAdBlocked(true)}
             />
           </div>
           {/* Bottom decoration */}

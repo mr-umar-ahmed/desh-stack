@@ -6,30 +6,56 @@ import { AdBanner } from "@/components/ads/AdBanner"
 import { Star, Search, ShieldCheck, TrendingUp, Users, Package, ArrowRight } from "lucide-react"
 
 export default async function Home() {
-  const categories = await prisma.category.findMany({
-    take: 6,
-    orderBy: { name: "asc" },
-  })
+  let categories: any[] = []
+  let products: any[] = []
+  let totalProducts = 0
+  let totalReviews = 0
+  let totalCategories = 0
 
-  const products = await prisma.product.findMany({
-    where: { status: "APPROVED" },
-    take: 8,
-    include: {
-      reviews: { select: { overallRating: true } },
-      score: true,
-    },
-  })
+  let recentProducts: any[] = []
 
-  const topProducts = products
-    .map((product) => {
-      const reviewCount = product.reviews.length
-      const averageRating =
-        reviewCount > 0
-          ? product.reviews.reduce((acc, rev) => acc + rev.overallRating, 0) / reviewCount
-          : 0
-      return { ...product, reviewCount, averageRating }
+  try {
+    categories = await prisma.category.findMany({
+      take: 6,
+      orderBy: { name: "asc" },
     })
-    .sort((a, b) => b.averageRating - a.averageRating)
+
+    products = await prisma.product.findMany({
+      where: { status: "APPROVED" },
+      take: 8,
+      include: {
+        reviews: { select: { overallRating: true } },
+        score: true,
+      },
+    })
+
+    recentProducts = await prisma.product.findMany({
+      where: { status: "APPROVED" },
+      take: 3,
+      orderBy: { createdAt: "desc" },
+      include: {
+        reviews: { select: { overallRating: true } },
+      }
+    })
+
+    totalProducts = await prisma.product.count({ where: { status: "APPROVED" } })
+    totalReviews = await prisma.review.count({ where: { status: "PUBLISHED" } })
+    totalCategories = await prisma.category.count()
+  } catch (error) {
+    console.error("Database connection error on homepage (check Vercel DATABASE_URL):", error)
+  }
+
+  const formatProducts = (prods: any[]) => prods.map((product) => {
+    const reviewCount = product.reviews.length
+    const averageRating =
+      reviewCount > 0
+        ? product.reviews.reduce((acc: any, rev: any) => acc + rev.overallRating, 0) / reviewCount
+        : 0
+    return { ...product, reviewCount, averageRating }
+  })
+
+  const topProducts = formatProducts(products).sort((a, b) => b.averageRating - a.averageRating)
+  const latestProducts = formatProducts(recentProducts)
 
   const quadrantProducts = products
     .filter((p) => p.score)
@@ -51,11 +77,6 @@ export default async function Home() {
         quadrant,
       }
     })
-
-  // Stats
-  const totalProducts = await prisma.product.count({ where: { status: "APPROVED" } })
-  const totalReviews = await prisma.review.count({ where: { status: "PUBLISHED" } })
-  const totalCategories = await prisma.category.count()
 
   return (
     <div className="flex flex-col pb-0">
@@ -99,45 +120,41 @@ export default async function Home() {
               href="/for-vendors"
               className="bg-white/10 text-paper font-semibold px-8 py-4 rounded-xl hover:bg-white/20 transition-all border border-white/20 backdrop-blur-sm hover:-translate-y-1 transform duration-200"
             >
-              Claim Your Profile
+              For Vendors
             </Link>
           </div>
-        </div>
-      </section>
 
-      {/* Stats Counter */}
-      <section className="bg-white border-b border-indigo/10">
-        <div className="container mx-auto px-4 md:px-6 py-8">
-          <div className="grid grid-cols-3 gap-4 md:gap-8 max-w-3xl mx-auto">
-            <div className="text-center animate-count-up">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Package className="w-5 h-5 text-indigo" />
-                <span className="font-heading text-3xl md:text-4xl font-black text-indigo">{totalProducts}+</span>
-              </div>
-              <p className="text-xs md:text-sm text-ink/50 font-medium">Products Listed</p>
+          <div className="flex items-center gap-8 mt-12 pt-8 border-t border-white/10 w-full justify-center opacity-80 animate-slide-up stagger-4">
+            <div className="flex flex-col items-center">
+              <span className="font-heading font-black text-3xl text-saffron">{totalProducts}+</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-paper/60">Products</span>
             </div>
-            <div className="text-center animate-count-up stagger-1">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Star className="w-5 h-5 text-saffron" />
-                <span className="font-heading text-3xl md:text-4xl font-black text-saffron">{totalReviews}+</span>
-              </div>
-              <p className="text-xs md:text-sm text-ink/50 font-medium">Verified Reviews</p>
+            <div className="w-px h-12 bg-white/10" />
+            <div className="flex flex-col items-center">
+              <span className="font-heading font-black text-3xl text-teal">{totalReviews}+</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-paper/60">Verified Reviews</span>
             </div>
-            <div className="text-center animate-count-up stagger-2">
-              <div className="flex items-center justify-center gap-2 mb-1">
-                <Users className="w-5 h-5 text-teal" />
-                <span className="font-heading text-3xl md:text-4xl font-black text-teal">{totalCategories}</span>
-              </div>
-              <p className="text-xs md:text-sm text-ink/50 font-medium">Categories</p>
+            <div className="w-px h-12 bg-white/10 hidden sm:block" />
+            <div className="flex flex-col items-center hidden sm:flex">
+              <span className="font-heading font-black text-3xl text-paper">{totalCategories}</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-paper/60">Categories</span>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Market Quadrant */}
+      {/* Market Quadrant Section */}
       {quadrantProducts.length > 0 && (
-        <section className="container mx-auto px-4 md:px-6 py-16">
-          <MarketQuadrant products={quadrantProducts} />
+        <section className="bg-white border-b border-indigo/10 py-16">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="mb-10 text-center">
+              <h2 className="font-heading text-2xl md:text-3xl font-bold text-ink">Market Quadrant</h2>
+              <p className="text-ink/60 mt-2 max-w-2xl mx-auto">
+                Visualize the market landscape based on vision and execution scores from real customer feedback.
+              </p>
+            </div>
+            <MarketQuadrant products={quadrantProducts} />
+          </div>
         </section>
       )}
 
@@ -182,8 +199,8 @@ export default async function Home() {
             View all <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {topProducts.map((product) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {topProducts.slice(0, 4).map((product) => (
             <ProductCard
               key={product.id}
               id={product.id}
@@ -198,6 +215,38 @@ export default async function Home() {
           ))}
         </div>
       </section>
+
+      {/* Recently Added Products */}
+      {latestProducts.length > 0 && (
+        <section className="bg-indigo/5 py-16 border-y border-indigo/10">
+          <div className="container mx-auto px-4 md:px-6">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="font-heading text-2xl md:text-3xl font-bold text-ink">Recently Added</h2>
+                <p className="text-ink/50 text-sm mt-1">Discover new B2B tools on DeshStack</p>
+              </div>
+              <Link href="/products?sort=newest" className="text-indigo font-medium hover:underline text-sm flex items-center gap-1">
+                View newest <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {latestProducts.map((product) => (
+                <ProductCard
+                  key={product.id}
+                  id={product.id}
+                  name={product.name}
+                  slug={product.slug}
+                  logoUrl={product.logoUrl}
+                  description={product.description}
+                  pricingText={product.pricingText}
+                  averageRating={product.averageRating}
+                  reviewCount={product.reviewCount}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* How It Works */}
       <section className="bg-white py-20">
