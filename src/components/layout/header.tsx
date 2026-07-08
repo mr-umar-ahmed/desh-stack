@@ -3,8 +3,9 @@ import Link from "next/link"
 import { UserButton } from "@clerk/nextjs"
 import { currentUser } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
-import { Search, Menu, X, Shield, Building2, LayoutDashboard } from "lucide-react"
+import { Shield, Building2, LayoutDashboard } from "lucide-react"
 import { SearchInput } from "@/components/SearchInput"
+import { MobileNav } from "@/components/layout/mobile-nav"
 
 export async function Header() {
   let clerkUser = null
@@ -96,6 +97,8 @@ export async function Header() {
               />
             </>
           )}
+
+          <MobileNav isSignedIn={!!clerkUser} role={role} />
         </div>
       </div>
     </header>

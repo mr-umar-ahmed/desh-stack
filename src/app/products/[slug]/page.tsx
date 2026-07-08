@@ -13,24 +13,33 @@ interface ProductPageProps {
   }>
 }
 
-export default async function ProductDetails({ params }: ProductPageProps) {
-  const resolvedParams = await params
-  const { slug } = resolvedParams
-
-  const product = await prisma.product.findUnique({
+function getProduct(slug: string) {
+  return prisma.product.findUnique({
     where: { slug },
     include: {
       category: true,
       reviews: {
         include: {
           user: {
-            select: { name: true, role: true }
-          }
+            select: { name: true, role: true },
+          },
         },
-        orderBy: { createdAt: 'desc' }
-      }
-    }
+        orderBy: { createdAt: "desc" },
+      },
+    },
   })
+}
+
+export default async function ProductDetails({ params }: ProductPageProps) {
+  const resolvedParams = await params
+  const { slug } = resolvedParams
+
+  let product: Awaited<ReturnType<typeof getProduct>> = null
+  try {
+    product = await getProduct(slug)
+  } catch (error) {
+    console.error("Database error in product detail page:", error)
+  }
 
   if (!product) {
     notFound()
@@ -41,22 +50,27 @@ export default async function ProductDetails({ params }: ProductPageProps) {
     ? product.reviews.reduce((acc, rev) => acc + rev.overallRating, 0) / reviewCount
     : 0
 
-  const clerkUser = await currentUser()
+  let clerkUser = null
   let isSaved = false
 
-  if (clerkUser) {
-    const dbUser = await prisma.user.findUnique({ where: { clerkId: clerkUser.id } })
-    if (dbUser) {
-      const saved = await prisma.savedProduct.findUnique({
-        where: {
-          userId_productId: {
-            userId: dbUser.id,
-            productId: product.id
-          }
-        }
-      })
-      isSaved = !!saved
+  try {
+    clerkUser = await currentUser()
+    if (clerkUser) {
+      const dbUser = await prisma.user.findUnique({ where: { clerkId: clerkUser.id } })
+      if (dbUser) {
+        const saved = await prisma.savedProduct.findUnique({
+          where: {
+            userId_productId: {
+              userId: dbUser.id,
+              productId: product.id,
+            },
+          },
+        })
+        isSaved = !!saved
+      }
     }
+  } catch (error) {
+    console.error("Auth/DB error loading saved state on product page:", error)
   }
 
   const toggleSave = toggleSaveProduct.bind(null, product.id, product.slug)

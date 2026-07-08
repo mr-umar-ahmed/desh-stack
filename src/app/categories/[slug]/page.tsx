@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { Fragment } from "react"
 import { prisma } from "@/lib/prisma"
 import { notFound } from "next/navigation"
 import { ProductCard } from "@/components/product-card"
@@ -83,20 +84,14 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product: any, index: number) => (
-            <>
+            <Fragment key={product.id}>
               {/* Insert sponsored card at position 3 */}
               {index === 2 && (
-                <SponsoredProductCard
-                  key="sponsored-infeed"
-                  ad={sponsoredProducts[0]}
-                />
+                <SponsoredProductCard ad={sponsoredProducts[0]} />
               )}
               {/* Insert Google Ad at position 6 */}
-              {index === 5 && (
-                <InFeedAd key="google-infeed" />
-              )}
-              <ProductCard 
-                key={product.id}
+              {index === 5 && <InFeedAd />}
+              <ProductCard
                 id={product.id}
                 name={product.name}
                 slug={product.slug}
@@ -106,7 +101,7 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
                 averageRating={product.averageRating}
                 reviewCount={product.reviewCount}
               />
-            </>
+            </Fragment>
           ))}
         </div>
       )}

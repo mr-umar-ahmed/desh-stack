@@ -2,6 +2,24 @@ import { prisma } from "@/lib/prisma"
 import { ProductCard } from "@/components/product-card"
 import { Search } from "lucide-react"
 
+function searchProducts(query: string) {
+  return prisma.product.findMany({
+    where: {
+      status: "APPROVED",
+      OR: [
+        { name: { contains: query, mode: "insensitive" } },
+        { description: { contains: query, mode: "insensitive" } },
+        { category: { name: { contains: query, mode: "insensitive" } } },
+      ],
+    },
+    include: {
+      category: true,
+      reviews: { select: { overallRating: true } },
+    },
+    orderBy: { createdAt: "desc" },
+  })
+}
+
 export default async function SearchPage({
   searchParams,
 }: {
@@ -10,21 +28,12 @@ export default async function SearchPage({
   const { q } = await searchParams
   const query = q || ""
 
-  const products = await prisma.product.findMany({
-    where: {
-      status: "APPROVED",
-      OR: [
-        { name: { contains: query, mode: "insensitive" } },
-        { description: { contains: query, mode: "insensitive" } },
-        { category: { name: { contains: query, mode: "insensitive" } } }
-      ]
-    },
-    include: {
-      category: true,
-      reviews: { select: { overallRating: true } }
-    },
-    orderBy: { createdAt: "desc" }
-  })
+  let products: Awaited<ReturnType<typeof searchProducts>> = []
+  try {
+    products = await searchProducts(query)
+  } catch (error) {
+    console.error("Database error in search page:", error)
+  }
 
   return (
     <div className="container mx-auto px-4 py-12">

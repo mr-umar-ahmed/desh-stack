@@ -22,6 +22,11 @@ const splineSansMono = Spline_Sans_Mono({
   subsets: ["latin"],
 });
 
+// The Header renders on every route and reads Clerk auth (via `headers()`),
+// so the whole app is inherently dynamic. Declaring it here avoids Next.js
+// attempting static prerender and logging dynamic-server-usage noise at build.
+export const dynamic = "force-dynamic"
+
 export const metadata: Metadata = {
   title: "DeshStack | Indian Software Reviews",
   description: "Production-grade, Gartner-style B2B software review SaaS focused on Indian-built software.",

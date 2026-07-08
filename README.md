@@ -72,7 +72,12 @@ DeshStack is a modern, production-grade B2B software review platform tailored fo
    The application will be available at `http://localhost:3000`.
 
 ## Deployment
-This project is optimized for deployment on Vercel. Ensure all environment variables are properly configured in your Vercel project settings before deploying.
+This project is optimized for deployment on Vercel. **See [DEPLOYMENT.md](DEPLOYMENT.md) for the full guide** — it covers the two most common production pitfalls:
+
+- **Database:** on Vercel you must use the Supabase **connection pooler** URL (the direct `db.<ref>.supabase.co` host is IPv6-only and unreachable from Vercel's IPv4 functions). Set both `DATABASE_URL` (pooler, port 6543) and `DIRECT_URL` (direct, port 5432).
+- **Auth:** use Clerk **production** keys (`pk_live_…` / `sk_live_…`), not the `pk_test_…` development keys.
+
+Ensure all environment variables from [.env.example](.env.example) are configured in your Vercel project settings before deploying.
 
 ## License
 MIT License

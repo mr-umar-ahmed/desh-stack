@@ -1,7 +1,9 @@
-/* eslint-disable */
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server"
 import { NextResponse } from "next/server"
 
+// Best-effort, per-instance rate limiting. On serverless each function
+// instance keeps its own map, so this is a coarse safety net rather than a
+// strict global limiter. For strict limits, back this with Upstash/Redis.
 const rateLimitMap = new Map<string, { count: number; timestamp: number }>()
 const WINDOW_MS = 60 * 1000
 const MAX_REQUESTS_PER_WINDOW = 200
@@ -14,28 +16,22 @@ const isProtectedRoute = createRouteMatcher([
 
 export default clerkMiddleware(async (auth, req) => {
   // --- Rate Limiting ---
-  const ip = req.headers.get("x-forwarded-for") || "127.0.0.1"
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
   const now = Date.now()
   const windowData = rateLimitMap.get(ip)
 
   if (!windowData) {
     rateLimitMap.set(ip, { count: 1, timestamp: now })
+  } else if (now - windowData.timestamp > WINDOW_MS) {
+    rateLimitMap.set(ip, { count: 1, timestamp: now })
   } else {
-    if (now - windowData.timestamp > WINDOW_MS) {
-      rateLimitMap.set(ip, { count: 1, timestamp: now })
-    } else {
-      windowData.count++
-      if (windowData.count > MAX_REQUESTS_PER_WINDOW) {
-        return new NextResponse("Too Many Requests", { status: 429 })
-      }
+    windowData.count++
+    if (windowData.count > MAX_REQUESTS_PER_WINDOW) {
+      return new NextResponse("Too Many Requests", { status: 429 })
     }
   }
 
-  // Onboarding flow bypassed for streamlined user experience
-  const authSession = await auth()
-  const { userId } = authSession
-
-  // Protect routes that require authentication
+  // Protect routes that require authentication.
   if (isProtectedRoute(req)) {
     await auth.protect()
   }
