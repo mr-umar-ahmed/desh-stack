@@ -1,0 +1,302 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Enums
+enum Role {
+  USER
+  PUBLISHER
+  MODERATOR
+  ADMIN
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum VendorRequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum ProductStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  ARCHIVED
+}
+
+enum ReviewStatus {
+  DRAFT
+  PENDING
+  PUBLISHED
+  REJECTED
+}
+
+enum VerificationMethod {
+  EMAIL_DOMAIN
+  SCREENSHOT
+}
+
+enum Dimension {
+  EASE_OF_USE
+  VALUE
+  LOCAL_SUPPORT
+  INTEGRATIONS
+}
+
+enum Plan {
+  FREE
+  GROWTH
+  SCALE
+}
+
+enum CompanySize {
+  JUST_ME
+  SMALL_1_49
+  MEDIUM_50_249
+  LARGE_250_999
+  ENTERPRISE_1000_PLUS
+}
+
+enum UsageDuration {
+  LESS_THAN_6_MONTHS
+  SIX_TO_12_MONTHS
+  ONE_TO_2_YEARS
+  MORE_THAN_2_YEARS
+}
+
+// Models
+model User {
+  id                 String       @id @default(cuid())
+  clerkId            String?      @unique
+  email              String       @unique
+  name               String?
+  role               Role         @default(USER)
+  jobTitle           String?
+  company            String?
+  image              String?
+  status             UserStatus   @default(ACTIVE)
+  onboardingComplete Boolean      @default(false)
+  createdAt          DateTime     @default(now())
+  updatedAt          DateTime     @updatedAt
+
+  products          Product[] // Products they published
+  reviews           Review[]
+  vendorResponses   VendorResponse[]
+  reports           Report[]
+  auditLogs         AuditLog[]
+  savedProducts     SavedProduct[]
+  categoryFollows   CategoryFollow[]
+  vendorRequests    VendorRequest[]
+  subscriptions     Subscription[]
+}
+
+model VendorRequest {
+  id          String              @id @default(cuid())
+  userId      String
+  companyName String
+  website     String?
+  status      VendorRequestStatus @default(PENDING)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+
+  user        User                @relation(fields: [userId], references: [id], onDelete: Cascade)
+  payment     Payment?
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  description String?
+  axisWeights Json     // e.g. { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] }
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  products Product[]
+  follows  CategoryFollow[]
+}
+
+model Product {
+  id          String        @id @default(cuid())
+  name        String
+  slug        String        @unique
+  categoryId  String
+  publisherId String
+  description String?       @db.Text
+  logoUrl     String?
+  website     String?
+  hqCity      String?
+  pricingText String?
+  status      ProductStatus @default(PENDING)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+
+  category     Category      @relation(fields: [categoryId], references: [id])
+  publisher    User          @relation(fields: [publisherId], references: [id])
+  pricingTiers PricingTier[]
+  reviews      Review[]
+  savedBy      SavedProduct[]
+  score        ProductScore?
+}
+
+model PricingTier {
+  id             String   @id @default(cuid())
+  productId      String
+  name           String
+  priceInr       Int
+  billingPeriod  String   // e.g. "MONTHLY", "YEARLY", "ONE_TIME"
+  features       Json
+  
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id                 String             @id @default(cuid())
+  productId          String
+  userId             String
+  overallRating      Int                // 1-5
+  title              String?
+  body               String?            @db.Text
+  pros               String[]
+  cons               String[]
+  companySize        CompanySize?
+  industry           String?
+  usageDuration      UsageDuration?
+  status             ReviewStatus       @default(DRAFT)
+  rejectionReason    String?
+  verificationMethod VerificationMethod?
+  isVerified         Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  publishedAt        DateTime?
+  updatedAt          DateTime           @updatedAt
+
+  product            Product                @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user               User                   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dimensionScores    ReviewDimensionScore[]
+  vendorResponse     VendorResponse?
+  reports            Report[]
+
+  @@unique([userId, productId])
+}
+
+model ReviewDimensionScore {
+  id        String    @id @default(cuid())
+  reviewId  String
+  dimension Dimension
+  score     Int       // 1-5
+
+  review    Review    @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+
+  @@unique([reviewId, dimension])
+}
+
+model VendorResponse {
+  id          String   @id @default(cuid())
+  reviewId    String   @unique
+  publisherId String
+  body        String   @db.Text
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  review      Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  publisher   User     @relation(fields: [publisherId], references: [id])
+}
+
+model Report {
+  id         String   @id @default(cuid())
+  reviewId   String
+  reporterId String
+  reason     String   @db.Text
+  status     String   @default("PENDING") // PENDING, RESOLVED, DISMISSED
+  resolvedBy String?
+  createdAt  DateTime @default(now())
+
+  review     Review   @relation(fields: [reviewId], references: [id], onDelete: Cascade)
+  reporter   User     @relation(fields: [reporterId], references: [id])
+}
+
+model Subscription {
+  id                     String   @id @default(cuid())
+  publisherId            String
+  plan                   Plan
+  razorpaySubscriptionId String?  @unique
+  status                 String
+  currentPeriodEnd       DateTime?
+  createdAt              DateTime @default(now())
+  updatedAt              DateTime @updatedAt
+
+  publisher              User      @relation(fields: [publisherId], references: [id])
+  payments               Payment[]
+}
+
+model Payment {
+  id                 String   @id @default(cuid())
+  subscriptionId     String?
+  vendorRequestId    String?  @unique
+  razorpayPaymentId  String   @unique
+  amountInr          Int
+  status             String
+  raw                Json
+  createdAt          DateTime @default(now())
+
+  subscription       Subscription? @relation(fields: [subscriptionId], references: [id])
+  vendorRequest      VendorRequest? @relation(fields: [vendorRequestId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  actorId    String
+  action     String
+  targetType String
+  targetId   String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  actor      User     @relation(fields: [actorId], references: [id])
+}
+
+model SavedProduct {
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+}
+
+model CategoryFollow {
+  userId     String
+  categoryId String
+  createdAt  DateTime @default(now())
+
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category   Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@id([userId, categoryId])
+}
+
+model ProductScore {
+  id             String   @id @default(cuid())
+  productId      String   @unique
+  avgRating      Float
+  reviewCount    Int
+  executionScore Float
+  visionScore    Float
+  updatedAt      DateTime @updatedAt
+
+  product        Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+}

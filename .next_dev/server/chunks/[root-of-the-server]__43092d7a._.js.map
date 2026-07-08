@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
+    {"offset": {"line": 55, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/DELL/OneDrive/Desktop/PROJECTS/deshstack/src/app/api/onboarding-sync/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\"\nimport { cookies } from \"next/headers\"\n\nexport async function GET(req: Request) {\n  const { searchParams } = new URL(req.url)\n  const redirectTo = searchParams.get(\"redirect\") || \"/dashboard\"\n  \n  const cookieStore = await cookies()\n  cookieStore.set(\"onboarding_complete\", \"true\", {\n    path: \"/\",\n    maxAge: 60 * 60 * 24 * 365, // 1 year\n    httpOnly: false,\n  })\n  \n  return NextResponse.redirect(new URL(redirectTo, req.url))\n}\n"],"names":[],"mappings":";;;;AAAA;AACA;;;AAEO,eAAe,IAAI,GAAY;IACpC,MAAM,EAAE,YAAY,EAAE,GAAG,IAAI,IAAI,IAAI,GAAG;IACxC,MAAM,aAAa,aAAa,GAAG,CAAC,eAAe;IAEnD,MAAM,cAAc,MAAM,IAAA,qVAAO;IACjC,YAAY,GAAG,CAAC,uBAAuB,QAAQ;QAC7C,MAAM;QACN,QAAQ,KAAK,KAAK,KAAK;QACvB,UAAU;IACZ;IAEA,OAAO,yVAAY,CAAC,QAAQ,CAAC,IAAI,IAAI,YAAY,IAAI,GAAG;AAC1D","debugId":null}}]
+}

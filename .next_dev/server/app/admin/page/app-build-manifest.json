@@ -1,0 +1,29 @@
+{
+  "pages": {
+    "/admin/page": [
+      "static/chunks/969b2_next_dist_95ed3fe9._.js",
+      "static/chunks/src_app_favicon_ico_mjs_15432dc8._.js",
+      "static/chunks/[root-of-the-server]__e5cbade1._.css",
+      "static/chunks/ad1d7_@clerk_nextjs_dist_esm_app-router_54164b74._.js",
+      "static/chunks/a5156_@clerk_shared_dist_a712234d._.js",
+      "static/chunks/9bbe3_@tanstack_query-core_build_modern_df214ffd._.js",
+      "static/chunks/978c1_@clerk_react_dist_6daf622b._.js",
+      "static/chunks/ad1d7_@clerk_nextjs_dist_esm_f4733904._.js",
+      "static/chunks/node_modules__pnpm_82c5284f._.js",
+      "static/chunks/src_components_SearchInput_tsx_7b78e009._.js",
+      "static/chunks/src_app_layout_tsx_7d556985._.js",
+      "static/chunks/_2b85a868._.js",
+      "static/chunks/src_app_error_tsx_015bad57._.js",
+      "static/chunks/969b2_next_dist_client_components_builtin_global-error_015bad57.js",
+      "static/chunks/[turbopack]_browser_dev_hmr-client_hmr-client_ts_9b35f2c4._.js",
+      "static/chunks/969b2_next_dist_compiled_react-dom_d6f1b83f._.js",
+      "static/chunks/969b2_next_dist_compiled_next-devtools_index_6bac7dbf.js",
+      "static/chunks/969b2_next_dist_compiled_8d8cd4a2._.js",
+      "static/chunks/969b2_next_dist_client_9a4cdd16._.js",
+      "static/chunks/969b2_next_dist_c103c0d9._.js",
+      "static/chunks/69652_@swc_helpers_cjs_77b72907._.js",
+      "static/chunks/_a0ff3932._.js",
+      "static/chunks/turbopack-_4953ed2c._.js"
+    ]
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "version": 3,
+  "sources": [],
+  "sections": [
+    {"offset": {"line": 4, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/DELL/OneDrive/Desktop/PROJECTS/deshstack/src/app/loading.tsx"],"sourcesContent":["export default function Loading() {\n  return (\n    <div className=\"container mx-auto px-4 py-16 max-w-4xl min-h-[50vh] flex flex-col items-center justify-center\">\n      <div className=\"w-12 h-12 border-4 border-indigo/20 border-t-indigo rounded-full animate-spin\"></div>\n      <p className=\"mt-4 text-ink/60 font-medium animate-pulse\">Loading...</p>\n    </div>\n  )\n}\n"],"names":[],"mappings":";;;;;;AAAe,SAAS;IACtB,qBACE,ubAAC;QAAI,WAAU;;0BACb,ubAAC;gBAAI,WAAU;;;;;;0BACf,ubAAC;gBAAE,WAAU;0BAA6C;;;;;;;;;;;;AAGhE","debugId":null}}]
+}
