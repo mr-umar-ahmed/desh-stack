@@ -41,10 +41,10 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
     notFound()
   }
 
-  const products = category.products.map(product => {
+  const products = category.products.map((product: any) => {
     const reviewCount = product.reviews.length
     const averageRating = reviewCount > 0 
-      ? product.reviews.reduce((acc, rev) => acc + rev.overallRating, 0) / reviewCount
+      ? product.reviews.reduce((acc: any, rev: any) => acc + rev.overallRating, 0) / reviewCount
       : 0
 
     return {
@@ -52,7 +52,7 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
       reviewCount,
       averageRating
     }
-  }).sort((a, b) => b.averageRating - a.averageRating)
+  }).sort((a: any, b: any) => b.averageRating - a.averageRating)
 
   return (
     <div className="container mx-auto px-4 md:px-6 py-12">
@@ -82,7 +82,7 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {products.map((product, index) => (
+          {products.map((product: any, index: number) => (
             <>
               {/* Insert sponsored card at position 3 */}
               {index === 2 && (
