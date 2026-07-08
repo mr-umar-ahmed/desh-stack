@@ -50,14 +50,16 @@ export function MobileNav({ isSignedIn, role }: MobileNavProps) {
             <div className="container mx-auto px-4 py-4 flex flex-col gap-1">
               <MobileLink href="/categories">Categories</MobileLink>
               <MobileLink href="/products">Products</MobileLink>
-              <MobileLink href="/for-vendors">For Vendors</MobileLink>
+              {!isSignedIn && <MobileLink href="/for-vendors">For Vendors</MobileLink>}
 
               {isSignedIn && (
                 <>
                   <div className="my-2 h-px bg-indigo/10" />
-                  <MobileLink href="/dashboard" icon={LayoutDashboard}>
-                    Dashboard
-                  </MobileLink>
+                  {(!role || role === "USER") && (
+                    <MobileLink href="/dashboard" icon={LayoutDashboard}>
+                      Dashboard
+                    </MobileLink>
+                  )}
                   {(role === "PUBLISHER" || role === "ADMIN" || role === "MODERATOR") && (
                     <MobileLink href="/publisher" icon={Building2}>
                       Publisher

@@ -31,7 +31,14 @@ export async function requireAuth(): Promise<AuthUser> {
     // Check if a user with this email already exists (e.g., from seed data)
     user = await prisma.user.findUnique({ where: { email } })
     const isMasterAdmin = email === "mylearning069@gmail.com"
-    const assignedRole = isMasterAdmin ? Role.ADMIN : Role.USER
+
+    // Role chosen at sign-up travels in Clerk unsafeMetadata. Only USER and
+    // PUBLISHER are self-selectable; ADMIN is reserved for the master email.
+    const requestedRole =
+      (clerkUser.unsafeMetadata?.role as string) === "PUBLISHER"
+        ? Role.PUBLISHER
+        : Role.USER
+    const assignedRole = isMasterAdmin ? Role.ADMIN : requestedRole
 
     if (user) {
       // Link existing user to Clerk

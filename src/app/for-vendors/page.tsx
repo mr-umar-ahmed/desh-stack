@@ -1,31 +1,26 @@
 /* eslint-disable */
-import { submitVendorRequest } from "./actions"
 import { currentUser } from "@clerk/nextjs/server"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
-import { Building2, IndianRupee, ShieldCheck, TrendingUp, Users, Zap, CheckCircle2, Star, Megaphone, ArrowRight, Check, AlertCircle } from "lucide-react"
+import { Building2, IndianRupee, ShieldCheck, TrendingUp, Users, CheckCircle2, ArrowRight, Check } from "lucide-react"
 
 async function VendorStatusSection({ userId }: { userId: string }) {
-  // This is a public marketing page, so any DB hiccup should degrade to the
-  // default sign-up CTA rather than crashing the whole page.
-  let dbUser = null
-  let request = null
+  // Vendors now choose their role at sign-up, so there is no request/approval
+  // form here. We only tailor the call-to-action to the signed-in user's role.
+  // A DB hiccup degrades to a safe default CTA rather than crashing the page.
+  let role: string | null = null
   try {
-    dbUser = await prisma.user.findUnique({ where: { clerkId: userId } })
-    if (dbUser) {
-      request = await prisma.vendorRequest.findFirst({
-        where: { userId: dbUser.id },
-        orderBy: { createdAt: "desc" },
-      })
-    }
+    const dbUser = await prisma.user.findUnique({
+      where: { clerkId: userId },
+      select: { role: true },
+    })
+    role = dbUser?.role ?? null
   } catch (error) {
     console.error("DB error in VendorStatusSection (check DATABASE_URL):", error)
-    return null
   }
 
-  if (!dbUser) return null
-
-  if (dbUser.role === "PUBLISHER" || dbUser.role === "ADMIN" || dbUser.role === "MODERATOR") {
+  // Vendors / staff → straight to the publisher portal.
+  if (role === "PUBLISHER" || role === "ADMIN" || role === "MODERATOR") {
     return (
       <Link href="/publisher" className="inline-flex items-center gap-2 bg-saffron text-indigo font-bold text-lg px-10 py-5 rounded-2xl hover:bg-saffron/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200">
         Go to Publisher Dashboard <ArrowRight className="w-5 h-5" />
@@ -33,67 +28,11 @@ async function VendorStatusSection({ userId }: { userId: string }) {
     )
   }
 
-  if (request) {
-    if (request.status === "PENDING") {
-      return (
-        <div className="bg-white/10 text-paper px-8 py-6 rounded-2xl border border-white/20 backdrop-blur-md max-w-md mx-auto text-left flex items-start gap-4">
-          <AlertCircle className="w-8 h-8 text-saffron shrink-0" />
-          <div>
-            <h3 className="font-bold text-xl mb-1 text-saffron">Request Under Review</h3>
-            <p className="text-paper/80">Your registration for {request.companyName} is currently being reviewed by our team. We&apos;ll notify you once approved!</p>
-          </div>
-        </div>
-      )
-    }
-    
-    if (request.status === "APPROVED") {
-      return (
-        <div className="bg-white/10 text-paper px-8 py-6 rounded-2xl border border-white/20 backdrop-blur-md max-w-md mx-auto text-left">
-          <h3 className="font-bold text-xl mb-3 text-teal">Request Approved! 🎉</h3>
-          <p className="text-paper/80 mb-6">Your publisher account is active. You can now list your first product for free.</p>
-          <Link href="/publisher" className="bg-teal text-white w-full font-bold px-6 py-4 rounded-xl hover:bg-teal/90 transition-all text-center block">
-            Go to Publisher Dashboard
-          </Link>
-        </div>
-      )
-    }
-
-    if (request.status === "REJECTED") {
-      return (
-        <div className="bg-red-500/10 text-paper px-8 py-6 rounded-2xl border border-red-500/20 backdrop-blur-md max-w-md mx-auto text-left flex items-start gap-4">
-          <AlertCircle className="w-8 h-8 text-red-400 shrink-0" />
-          <div>
-            <h3 className="font-bold text-xl mb-1 text-red-400">Request Denied</h3>
-            <p className="text-paper/80">Unfortunately, your registration request was denied. Please contact support for more details.</p>
-          </div>
-        </div>
-      )
-    }
-  }
-
-  // No request found, show the form
+  // Reviewers get a single, non-pushy CTA — no vendor sign-up prompts.
   return (
-    <form action={submitVendorRequest} className="bg-white/10 p-8 rounded-2xl border border-white/20 backdrop-blur-md max-w-md mx-auto text-left">
-      <h3 className="font-bold text-2xl mb-6 text-paper">Request Registration</h3>
-      
-      <div className="space-y-4 mb-6">
-        <div>
-          <label className="block text-sm font-medium text-paper/80 mb-1">Company Name *</label>
-          <input type="text" name="companyName" required className="w-full bg-white text-ink px-4 py-3 rounded-lg focus:ring-2 focus:ring-saffron outline-none" placeholder="e.g. Acme Corp" />
-        </div>
-        <div>
-          <label className="block text-sm font-medium text-paper/80 mb-1">Website URL</label>
-          <input type="url" name="website" className="w-full bg-white text-ink px-4 py-3 rounded-lg focus:ring-2 focus:ring-saffron outline-none" placeholder="https://..." />
-        </div>
-      </div>
-
-      <button
-        type="submit"
-        className="w-full bg-saffron text-indigo font-bold text-lg px-6 py-4 rounded-xl hover:bg-saffron/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200 flex items-center justify-center gap-2"
-      >
-        Submit Request <ArrowRight className="w-5 h-5" />
-      </button>
-    </form>
+    <Link href="/products" className="inline-flex items-center gap-2 bg-saffron text-indigo font-bold text-lg px-10 py-5 rounded-2xl hover:bg-saffron/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200">
+      Explore Products <ArrowRight className="w-5 h-5" />
+    </Link>
   )
 }
 
@@ -132,10 +71,10 @@ export default async function ForVendorsPage() {
             <VendorStatusSection userId={user.id} />
           ) : (
             <Link
-              href="/sign-up"
+              href="/sign-up?role=vendor"
               className="inline-flex items-center gap-2 bg-saffron text-indigo font-bold text-lg px-10 py-5 rounded-2xl hover:bg-saffron/90 transition-all shadow-lg hover:shadow-xl hover:-translate-y-1 transform duration-200"
             >
-              Sign Up to Get Started <ArrowRight className="w-5 h-5" />
+              Sign Up as a Vendor <ArrowRight className="w-5 h-5" />
             </Link>
           )}
         </div>
@@ -217,19 +156,12 @@ export default async function ForVendorsPage() {
           <IndianRupee className="w-10 h-10 text-saffron mx-auto mb-4" />
           <h2 className="font-heading text-2xl font-bold text-ink mb-3">Ready to Grow?</h2>
           <p className="text-ink/60 mb-8">Listing your product is completely free. Upgrade anytime for premium features.</p>
-          {user ? (
-            <a
-              href="#"
-              className="inline-block bg-indigo text-paper font-bold px-8 py-4 rounded-xl hover:bg-indigo/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200"
-            >
-              Go to Registration
-            </a>
-          ) : (
+          {!user && (
             <Link
-              href="/sign-up"
+              href="/sign-up?role=vendor"
               className="inline-block bg-indigo text-paper font-bold px-8 py-4 rounded-xl hover:bg-indigo/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200"
             >
-              Create an Account
+              Create a Vendor Account
             </Link>
           )}
         </div>

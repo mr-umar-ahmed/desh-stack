@@ -42,9 +42,12 @@ export async function Header() {
             <Link href="/products" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all">
               Products
             </Link>
-            <Link href="/for-vendors" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all">
-              For Vendors
-            </Link>
+            {/* "For Vendors" is a marketing entry point — only for logged-out visitors. */}
+            {!clerkUser && (
+              <Link href="/for-vendors" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all">
+                For Vendors
+              </Link>
+            )}
           </nav>
         </div>
         <div className="flex items-center gap-3">
@@ -68,12 +71,15 @@ export async function Header() {
             </>
           ) : (
             <>
-              {/* Role-aware navigation */}
+              {/* Role-aware navigation: reviewers see Dashboard, vendors see the
+                  Publisher portal, staff see both. */}
               <div className="hidden sm:flex items-center gap-1">
-                <Link href="/dashboard" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all flex items-center gap-1.5">
-                  <LayoutDashboard className="w-3.5 h-3.5" />
-                  Dashboard
-                </Link>
+                {(!role || role === "USER") && (
+                  <Link href="/dashboard" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all flex items-center gap-1.5">
+                    <LayoutDashboard className="w-3.5 h-3.5" />
+                    Dashboard
+                  </Link>
+                )}
                 {(role === "PUBLISHER" || role === "ADMIN" || role === "MODERATOR") && (
                   <Link href="/publisher" className="text-sm font-medium text-ink/70 hover:text-saffron hover:bg-saffron/5 px-3 py-2 rounded-lg transition-all flex items-center gap-1.5">
                     <Building2 className="w-3.5 h-3.5" />
