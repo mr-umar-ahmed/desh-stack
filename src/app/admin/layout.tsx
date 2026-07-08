@@ -3,13 +3,22 @@ export const dynamic = "force-dynamic"
 import { requireRole } from "@/lib/rbac"
 import Link from "next/link"
 import { Shield, MessageSquare, Package, Users, LayoutDashboard } from "lucide-react"
+import { isNextControlFlowError } from "@/lib/errors"
+import { ServiceUnavailable } from "@/components/ui/service-unavailable"
 
 export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = await requireRole(["ADMIN", "MODERATOR"])
+  let user
+  try {
+    user = await requireRole(["ADMIN", "MODERATOR"])
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error
+    console.error("Admin layout failed to load (check DATABASE_URL):", error)
+    return <ServiceUnavailable />
+  }
 
   const navItems = [
     { href: "/admin", label: "Dashboard", icon: LayoutDashboard },

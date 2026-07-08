@@ -1,13 +1,22 @@
 import { requireRole } from "@/lib/rbac"
 import Link from "next/link"
 import { Building2, PlusCircle, LayoutDashboard, CreditCard } from "lucide-react"
+import { isNextControlFlowError } from "@/lib/errors"
+import { ServiceUnavailable } from "@/components/ui/service-unavailable"
 
 export default async function PublisherLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const user = await requireRole(["PUBLISHER", "ADMIN", "MODERATOR"])
+  let user
+  try {
+    user = await requireRole(["PUBLISHER", "ADMIN", "MODERATOR"])
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error
+    console.error("Publisher layout failed to load (check DATABASE_URL):", error)
+    return <ServiceUnavailable />
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in">

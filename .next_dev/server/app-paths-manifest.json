@@ -1,7 +1,5 @@
 {
-  "/dashboard/page": "app/dashboard/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
   "/for-vendors/page": "app/for-vendors/page.js",
-  "/page": "app/page.js",
-  "/products/page": "app/products/page.js"
+  "/page": "app/page.js"
 }

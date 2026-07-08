@@ -3,6 +3,8 @@ import { notFound } from "next/navigation"
 import { requireAuth } from "@/lib/rbac"
 import { ReviewForm } from "./ReviewForm"
 import Link from "next/link"
+import { isNextControlFlowError } from "@/lib/errors"
+import { ServiceUnavailable } from "@/components/ui/service-unavailable"
 
 interface ReviewPageProps {
   params: Promise<{
@@ -11,6 +13,16 @@ interface ReviewPageProps {
 }
 
 export default async function ReviewPage({ params }: ReviewPageProps) {
+  try {
+    return await ReviewPageContent({ params })
+  } catch (error) {
+    if (isNextControlFlowError(error)) throw error
+    console.error("Review page failed to load (check DATABASE_URL):", error)
+    return <ServiceUnavailable title="We couldn't load this review form" />
+  }
+}
+
+async function ReviewPageContent({ params }: ReviewPageProps) {
   const user = await requireAuth()
   const resolvedParams = await params
   const { slug } = resolvedParams

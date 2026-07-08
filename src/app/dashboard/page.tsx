@@ -6,8 +6,26 @@ import Link from "next/link"
 import { Star, Bookmark, MessageSquare, TrendingUp } from "lucide-react"
 
 import { redirect } from "next/navigation"
+import { isNextControlFlowError } from "@/lib/errors"
+import { ServiceUnavailable } from "@/components/ui/service-unavailable"
 
 export default async function DashboardPage() {
+  try {
+    return await DashboardContent()
+  } catch (error) {
+    // Let redirect()/notFound() propagate; only swallow real (e.g. DB) errors.
+    if (isNextControlFlowError(error)) throw error
+    console.error("Dashboard failed to load (check DATABASE_URL):", error)
+    return (
+      <ServiceUnavailable
+        title="We couldn't load your dashboard"
+        description="We're having trouble reaching our database right now. Please try again in a moment."
+      />
+    )
+  }
+}
+
+async function DashboardContent() {
   const user = await requireAuth()
 
   if (user.role === "ADMIN") {

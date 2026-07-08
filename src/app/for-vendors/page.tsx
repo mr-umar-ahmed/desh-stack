@@ -6,7 +6,23 @@ import { prisma } from "@/lib/prisma"
 import { Building2, IndianRupee, ShieldCheck, TrendingUp, Users, Zap, CheckCircle2, Star, Megaphone, ArrowRight, Check, AlertCircle } from "lucide-react"
 
 async function VendorStatusSection({ userId }: { userId: string }) {
-  const dbUser = await prisma.user.findUnique({ where: { clerkId: userId } })
+  // This is a public marketing page, so any DB hiccup should degrade to the
+  // default sign-up CTA rather than crashing the whole page.
+  let dbUser = null
+  let request = null
+  try {
+    dbUser = await prisma.user.findUnique({ where: { clerkId: userId } })
+    if (dbUser) {
+      request = await prisma.vendorRequest.findFirst({
+        where: { userId: dbUser.id },
+        orderBy: { createdAt: "desc" },
+      })
+    }
+  } catch (error) {
+    console.error("DB error in VendorStatusSection (check DATABASE_URL):", error)
+    return null
+  }
+
   if (!dbUser) return null
 
   if (dbUser.role === "PUBLISHER" || dbUser.role === "ADMIN" || dbUser.role === "MODERATOR") {
@@ -16,11 +32,6 @@ async function VendorStatusSection({ userId }: { userId: string }) {
       </Link>
     )
   }
-
-  const request = await prisma.vendorRequest.findFirst({
-    where: { userId: dbUser.id },
-    orderBy: { createdAt: "desc" }
-  })
 
   if (request) {
     if (request.status === "PENDING") {
@@ -87,7 +98,12 @@ async function VendorStatusSection({ userId }: { userId: string }) {
 }
 
 export default async function ForVendorsPage() {
-  const user = await currentUser()
+  let user = null
+  try {
+    user = await currentUser()
+  } catch (error) {
+    console.error("Clerk auth error on for-vendors page:", error)
+  }
 
   return (
     <div className="animate-fade-in">
