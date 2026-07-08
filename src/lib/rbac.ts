@@ -1,6 +1,7 @@
 import { currentUser } from "@clerk/nextjs/server"
 import { prisma } from "@/lib/prisma"
 import { Role } from "@prisma/client"
+import { redirect } from "next/navigation"
 
 export type AuthUser = {
   id: string
@@ -14,7 +15,7 @@ export type AuthUser = {
 export async function requireAuth(): Promise<AuthUser> {
   const clerkUser = await currentUser()
   if (!clerkUser) {
-    throw new Error("Unauthorized")
+    redirect("/sign-in")
   }
 
   // Find or create the user in our DB
@@ -75,7 +76,7 @@ export async function requireAuth(): Promise<AuthUser> {
 export async function requireRole(allowedRoles: Role[]): Promise<AuthUser> {
   const user = await requireAuth()
   if (!allowedRoles.includes(user.role)) {
-    throw new Error("Forbidden")
+    redirect("/")
   }
   return user
 }
