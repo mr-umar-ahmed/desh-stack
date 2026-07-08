@@ -29,11 +29,13 @@ export async function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-indigo/10 glass">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-8">
-          <Link href="/" className="font-heading text-2xl font-bold text-indigo tracking-tight flex items-center gap-2 group">
-            <span className="w-8 h-8 rounded-lg bg-indigo flex items-center justify-center text-paper text-sm font-black group-hover:animate-pulse-glow transition-shadow">
+          <Link href="/" className="font-heading text-2xl font-black text-indigo tracking-tight flex items-center gap-2.5 group">
+            <span className="logo-tile w-9 h-9 rounded-xl flex items-center justify-center text-paper text-sm font-black shadow-md transition-transform duration-300 group-hover:rotate-6 group-hover:scale-105">
               D
             </span>
-            <span className="hidden sm:inline">DeshStack</span>
+            <span className="hidden sm:inline">
+              Desh<span className="text-saffron">Stack</span>
+            </span>
           </Link>
           <nav className="hidden md:flex items-center gap-1">
             <Link href="/categories" className="text-sm font-medium text-ink/70 hover:text-indigo hover:bg-indigo/5 px-3 py-2 rounded-lg transition-all">
