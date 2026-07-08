@@ -14,20 +14,29 @@ const isProtectedRoute = createRouteMatcher([
   "/admin(.*)",
 ])
 
-export default clerkMiddleware(async (auth, req) => {
-  // --- Rate Limiting ---
-  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
-  const now = Date.now()
-  const windowData = rateLimitMap.get(ip)
+// Webhooks (external services) and the health check must never be rate-limited
+// or throttled by our per-IP limiter, or Clerk/Razorpay callbacks could drop.
+const isExemptRoute = createRouteMatcher([
+  "/api/webhooks(.*)",
+  "/api/health",
+])
 
-  if (!windowData) {
-    rateLimitMap.set(ip, { count: 1, timestamp: now })
-  } else if (now - windowData.timestamp > WINDOW_MS) {
-    rateLimitMap.set(ip, { count: 1, timestamp: now })
-  } else {
-    windowData.count++
-    if (windowData.count > MAX_REQUESTS_PER_WINDOW) {
-      return new NextResponse("Too Many Requests", { status: 429 })
+export default clerkMiddleware(async (auth, req) => {
+  // --- Rate Limiting (skip exempt routes) ---
+  if (!isExemptRoute(req)) {
+    const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "127.0.0.1"
+    const now = Date.now()
+    const windowData = rateLimitMap.get(ip)
+
+    if (!windowData) {
+      rateLimitMap.set(ip, { count: 1, timestamp: now })
+    } else if (now - windowData.timestamp > WINDOW_MS) {
+      rateLimitMap.set(ip, { count: 1, timestamp: now })
+    } else {
+      windowData.count++
+      if (windowData.count > MAX_REQUESTS_PER_WINDOW) {
+        return new NextResponse("Too Many Requests", { status: 429 })
+      }
     }
   }
 
