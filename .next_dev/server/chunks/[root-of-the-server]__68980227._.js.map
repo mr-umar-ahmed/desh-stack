@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 3, "column": 0}, "map": {"version":3,"sources":[],"names":[],"mappings":"","debugId":null}},
-    {"offset": {"line": 61, "column": 0}, "map": {"version":3,"sources":["file:///C:/Users/DELL/OneDrive/Desktop/PROJECTS/deshstack/src/app/api/onboarding-sync/route.ts"],"sourcesContent":["import { NextResponse } from \"next/server\"\nimport { cookies } from \"next/headers\"\nimport { auth } from \"@clerk/nextjs/server\"\n\nexport async function GET(req: Request) {\n  const { userId } = await auth()\n  if (!userId) {\n    return NextResponse.json({ error: \"Unauthorized\" }, { status: 401 })\n  }\n\n  const { searchParams } = new URL(req.url)\n  const redirectTo = searchParams.get(\"redirect\") || \"/dashboard\"\n  \n  const cookieStore = await cookies()\n  cookieStore.set(`onboarding_${userId}`, \"true\", {\n    path: \"/\",\n    maxAge: 60 * 60 * 24 * 365, // 1 year\n    httpOnly: false,\n  })\n  \n  return NextResponse.redirect(new URL(redirectTo, req.url))\n}\n"],"names":[],"mappings":";;;;AAAA;AACA;AACA;;;;AAEO,eAAe,IAAI,GAAY;IACpC,MAAM,EAAE,MAAM,EAAE,GAAG,MAAM,IAAA,mZAAI;IAC7B,IAAI,CAAC,QAAQ;QACX,OAAO,yVAAY,CAAC,IAAI,CAAC;YAAE,OAAO;QAAe,GAAG;YAAE,QAAQ;QAAI;IACpE;IAEA,MAAM,EAAE,YAAY,EAAE,GAAG,IAAI,IAAI,IAAI,GAAG;IACxC,MAAM,aAAa,aAAa,GAAG,CAAC,eAAe;IAEnD,MAAM,cAAc,MAAM,IAAA,qVAAO;IACjC,YAAY,GAAG,CAAC,CAAC,WAAW,EAAE,QAAQ,EAAE,QAAQ;QAC9C,MAAM;QACN,QAAQ,KAAK,KAAK,KAAK;QACvB,UAAU;IACZ;IAEA,OAAO,yVAAY,CAAC,QAAQ,CAAC,IAAI,IAAI,YAAY,IAAI,GAAG;AAC1D","debugId":null}}]
-}
