@@ -10,12 +10,21 @@ async function main() {
 
   // Create Categories
   const categories = [
-    { name: 'CRM', slug: 'crm', description: 'Customer Relationship Management', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
-    { name: 'HRMS', slug: 'hrms', description: 'Human Resource Management System', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
-    { name: 'Payment Gateways', slug: 'payment-gateways', description: 'Online payment processing', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
-    { name: 'Helpdesk', slug: 'helpdesk', description: 'Customer support and ticketing', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
-    { name: 'Accounting', slug: 'accounting', description: 'Financial accounting software', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
-    { name: 'Security & Compliance', slug: 'security-compliance', description: 'Security and compliance automation', axisWeights: { vision: ['VALUE', 'INTEGRATIONS'], execution: ['EASE_OF_USE', 'LOCAL_SUPPORT'] } },
+    { name: "Accounting", slug: "accounting", description: "GST-compliant accounting, invoicing, and tax filing software.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "HRMS & Payroll", slug: "hrms", description: "Human Resource Management Systems for Indian payroll and compliance.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "CRM", slug: "crm", description: "Customer Relationship Management and sales execution platforms.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Payment Gateways", slug: "payment-gateways", description: "Online payment processing, checkout integrations, and payouts.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Helpdesk", slug: "helpdesk", description: "Customer support, ticketing, and conversation management.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Security & Compliance", slug: "security-compliance", description: "Security compliance automation, auditing, and DPDP frameworks.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "IT - Hardware", slug: "it-hardware", description: "Enterprise servers, office networking equipment, and computing devices.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "IT - Software", slug: "it-software", description: "Developer utilities, operating systems, and enterprise business applications.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "IT - Cloud", slug: "it-cloud", description: "Cloud infrastructure providers, database hosting, and web hosting.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Food Industry - Soft Drink", slug: "food-soft-drink", description: "Beverage manufacturing, retail display, and soft drink distribution systems.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Food Industry - Ready Made Packet", slug: "food-ready-made-packet", description: "Ready-to-eat meals, FMCG packaging, and inventory tracking tools.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Construction - Structure", slug: "construction-structure", description: "Structural engineering models, building frameworks, and CAD/BIM software.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Construction - Steel", slug: "construction-steel", description: "Steel procurement portals, heavy industry fabrication, and structural steel logs.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Construction - Cement", slug: "construction-cement", description: "Cement supplier logistics, concrete mix management, and dealer portals.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } },
+    { name: "Construction - Interior", slug: "construction-interior", description: "Interior design software, commercial space fit-outs, and architectural visualization.", axisWeights: { "vision": ["VALUE", "INTEGRATIONS"], "execution": ["EASE_OF_USE", "LOCAL_SUPPORT"] } }
   ]
 
   for (const cat of categories) {
