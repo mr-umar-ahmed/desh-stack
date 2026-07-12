@@ -74,7 +74,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
           }
         },
         theme: {
-          color: "#1a1b3a" // Indigo
+          color: "#4c5372" // Brand primary (deep slate)
         }
       }
 
