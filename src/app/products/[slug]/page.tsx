@@ -6,6 +6,7 @@ import { Star, CheckCircle2, ShieldCheck, IndianRupee, BookmarkPlus, BookmarkChe
 import { currentUser } from "@clerk/nextjs/server"
 import { toggleSaveProduct } from "./actions"
 import { SidebarAd } from "@/components/ads/SidebarAd"
+import { UpvoteButton } from "@/components/upvote-button"
 
 interface ProductPageProps {
   params: Promise<{
@@ -26,6 +27,7 @@ function getProduct(slug: string) {
         },
         orderBy: { createdAt: "desc" },
       },
+      _count: { select: { upvotes: true } },
     },
   })
 }
@@ -52,21 +54,22 @@ export default async function ProductDetails({ params }: ProductPageProps) {
 
   let clerkUser = null
   let isSaved = false
+  let isUpvoted = false
 
   try {
     clerkUser = await currentUser()
     if (clerkUser) {
       const dbUser = await prisma.user.findUnique({ where: { clerkId: clerkUser.id } })
       if (dbUser) {
-        const saved = await prisma.savedProduct.findUnique({
-          where: {
-            userId_productId: {
-              userId: dbUser.id,
-              productId: product.id,
-            },
-          },
-        })
+        const key = {
+          userId_productId: { userId: dbUser.id, productId: product.id },
+        }
+        const [saved, upvote] = await Promise.all([
+          prisma.savedProduct.findUnique({ where: key }),
+          prisma.upvote.findUnique({ where: key }),
+        ])
         isSaved = !!saved
+        isUpvoted = !!upvote
       }
     }
   } catch (error) {
@@ -98,6 +101,15 @@ export default async function ProductDetails({ params }: ProductPageProps) {
                 <p className="text-xl text-ink/70">{product.description}</p>
               </div>
               <div className="flex flex-col gap-2 shrink-0">
+                <div className="flex justify-center mb-1">
+                  <UpvoteButton
+                    productId={product.id}
+                    slug={product.slug}
+                    initialCount={product._count.upvotes}
+                    initialUpvoted={isUpvoted}
+                    isSignedIn={!!clerkUser}
+                  />
+                </div>
                 <a href={product.website ?? "#"} target="_blank" rel="noopener noreferrer" className="bg-indigo text-paper font-semibold px-6 py-3 rounded-lg hover:bg-indigo/90 transition-colors text-center shadow-sm">
                   Visit Website
                 </a>

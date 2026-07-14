@@ -68,6 +68,18 @@ export async function requireAuth(): Promise<AuthUser> {
       where: { id: user.id },
       data: { role: Role.ADMIN }
     })
+  } else if (
+    user.role === Role.USER &&
+    (clerkUser.unsafeMetadata?.role as string) === "PUBLISHER"
+  ) {
+    // The Clerk webhook used to create users as USER regardless of the role
+    // they chose at sign-up. Honor the original vendor choice here so those
+    // accounts aren't locked out of the publisher portal. Staff roles are
+    // never changed by this path.
+    user = await prisma.user.update({
+      where: { id: user.id },
+      data: { role: Role.PUBLISHER },
+    })
   }
 
   return {

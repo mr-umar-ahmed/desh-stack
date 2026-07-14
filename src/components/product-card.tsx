@@ -1,6 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link"
-import { Star, ShieldCheck, ArrowRight } from "lucide-react"
+import { Star, ShieldCheck, ArrowRight, ChevronUp } from "lucide-react"
 
 interface ProductCardProps {
   id: string
@@ -11,6 +11,8 @@ interface ProductCardProps {
   pricingText?: string | null
   averageRating: number
   reviewCount: number
+  /** Community upvotes (Product Hunt-style); chip hidden when undefined. */
+  upvoteCount?: number
 }
 
 export function ProductCard({
@@ -21,6 +23,7 @@ export function ProductCard({
   pricingText,
   averageRating,
   reviewCount,
+  upvoteCount,
 }: ProductCardProps) {
   return (
     <Link
@@ -59,12 +62,20 @@ export function ProductCard({
       </div>
       
       <div className="relative z-10 flex items-center justify-between border-t border-indigo/5 pt-5 mt-auto">
-        <div className="flex items-center gap-1.5 bg-saffron/10 px-2.5 py-1 rounded-lg border border-saffron/20">
-          <Star className="h-4 w-4 fill-saffron text-saffron" />
-          <span className="text-sm font-bold text-ink">{averageRating > 0 ? averageRating.toFixed(1) : "New"}</span>
-          <span className="text-xs font-medium text-ink/50 ml-0.5">
-            {reviewCount > 0 ? `(${reviewCount})` : ""}
-          </span>
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 bg-saffron/10 px-2.5 py-1 rounded-lg border border-saffron/20">
+            <Star className="h-4 w-4 fill-saffron text-saffron" />
+            <span className="text-sm font-bold text-ink">{averageRating > 0 ? averageRating.toFixed(1) : "New"}</span>
+            <span className="text-xs font-medium text-ink/50 ml-0.5">
+              {reviewCount > 0 ? `(${reviewCount})` : ""}
+            </span>
+          </div>
+          {upvoteCount !== undefined && (
+            <div className="flex items-center gap-0.5 bg-indigo/5 px-2 py-1 rounded-lg border border-indigo/10">
+              <ChevronUp className="h-3.5 w-3.5 text-indigo" strokeWidth={3} />
+              <span className="text-xs font-bold text-ink">{upvoteCount}</span>
+            </div>
+          )}
         </div>
         <span className="text-sm font-bold text-indigo flex items-center gap-1 group-hover:gap-2 transition-all">
           View <ArrowRight className="w-4 h-4" />

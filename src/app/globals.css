@@ -5,11 +5,10 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────
-   DeshStack Design System — "Nextpure"
-   User-selected palette: ivory #FFFDF6 · lilac #E2D4E0 ·
-   periwinkle #949AB1 · slate violet #7C7E9D · deep slate #4C5372.
-   Soft, calm, premium. Mauve/ink shades are derived tints of the
-   palette for text contrast (WCAG AA+).
+   DeshStack Design System — "Tricolor Premium"
+   A proudly Indian identity: warm ivory paper, deep chakra navy,
+   true saffron energy, and India-green trust signals. Premium,
+   warm, and instantly recognizable to Indian users.
    NOTE: these MUST live in @theme for Tailwind v4 to generate
    the bg-, text-, border-, and fill- utilities used across the app.
    Token names are legacy roles: indigo = primary dark,
@@ -17,14 +16,14 @@
    ───────────────────────────────────────────────────────────── */
 @theme {
   /* Brand palette */
-  --color-paper: #fffdf6;
-  --color-paper-2: #e2d4e0;
-  --color-ink: #3c4258;
-  --color-indigo: #4c5372;
-  --color-indigo-2: #5d6485;
-  --color-saffron: #9a7796;
-  --color-saffron-2: #7d5c79;
-  --color-teal: #7c7e9d;
+  --color-paper: #fffcf5;
+  --color-paper-2: #f9efdd;
+  --color-ink: #142046;
+  --color-indigo: #1a2c6b;
+  --color-indigo-2: #24409c;
+  --color-saffron: #f4640a;
+  --color-saffron-2: #c94d04;
+  --color-teal: #087a3d;
 
   /* Motion */
   --animate-fade-in: fade-in 0.6s ease-out forwards;
@@ -52,8 +51,8 @@
     50% { transform: translateY(-12px); }
   }
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(148, 154, 177, 0.2); }
-    50% { box-shadow: 0 0 40px rgba(148, 154, 177, 0.38); }
+    0%, 100% { box-shadow: 0 0 20px rgba(244, 100, 10, 0.18); }
+    50% { box-shadow: 0 0 40px rgba(244, 100, 10, 0.34); }
   }
   @keyframes scale-in {
     from { opacity: 0; transform: scale(0.95); }
@@ -97,46 +96,46 @@
 }
 
 :root {
-  --background: #fffdf6;
-  --foreground: #3c4258;
+  --background: #fffcf5;
+  --foreground: #142046;
   --card: #ffffff;
-  --card-foreground: #3c4258;
+  --card-foreground: #142046;
   --popover: #ffffff;
-  --popover-foreground: #3c4258;
-  --primary: #4c5372;
+  --popover-foreground: #142046;
+  --primary: #1a2c6b;
   --primary-foreground: #ffffff;
-  --secondary: #efe8ef;
-  --secondary-foreground: #4c5372;
-  --muted: #efe8ef;
-  --muted-foreground: #7c7e9d;
-  --accent: #9a7796;
+  --secondary: #f9efdd;
+  --secondary-foreground: #1a2c6b;
+  --muted: #f9efdd;
+  --muted-foreground: #78716c;
+  --accent: #f4640a;
   --accent-foreground: #ffffff;
-  --destructive: #e11d48;
-  --border: #e6dee7;
-  --input: #e6dee7;
-  --ring: #7c7e9d;
+  --destructive: #dc2626;
+  --border: #efe4cf;
+  --input: #efe4cf;
+  --ring: #087a3d;
   --radius: 0.5rem;
 }
 
 .dark {
-  --background: #383d54;
-  --foreground: #fffdf6;
-  --card: #4c5372;
-  --card-foreground: #fffdf6;
-  --popover: #4c5372;
-  --popover-foreground: #fffdf6;
-  --primary: #e2d4e0;
-  --primary-foreground: #3c4258;
-  --secondary: #5d6485;
+  --background: #0d1530;
+  --foreground: #fffcf5;
+  --card: #1a2c6b;
+  --card-foreground: #fffcf5;
+  --popover: #1a2c6b;
+  --popover-foreground: #fffcf5;
+  --primary: #ff8a3d;
+  --primary-foreground: #142046;
+  --secondary: #24409c;
   --secondary-foreground: #ffffff;
-  --muted: #5d6485;
-  --muted-foreground: #b6b9cb;
-  --accent: #949ab1;
-  --accent-foreground: #3c4258;
-  --destructive: #fb7185;
-  --border: #5d6485;
-  --input: #5d6485;
-  --ring: #e2d4e0;
+  --muted: #24409c;
+  --muted-foreground: #a9b4d6;
+  --accent: #22c55e;
+  --accent-foreground: #142046;
+  --destructive: #f87171;
+  --border: #24409c;
+  --input: #24409c;
+  --ring: #ff8a3d;
 }
 
 @layer base {
@@ -150,52 +149,52 @@
     @apply font-sans scroll-smooth;
   }
   ::selection {
-    background-color: rgba(148, 154, 177, 0.3);
-    color: #3c4258;
+    background-color: rgba(244, 100, 10, 0.22);
+    color: #1a2c6b;
   }
   /* Refined scrollbar */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(76, 83, 114, 0.2);
+    background: rgba(26, 44, 107, 0.2);
     border-radius: 8px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
-  ::-webkit-scrollbar-thumb:hover { background-color: rgba(76, 83, 114, 0.35); }
+  ::-webkit-scrollbar-thumb:hover { background-color: rgba(26, 44, 107, 0.35); }
 }
 
 /* ─── Surfaces & textures ──────────────────────────────────── */
 
 /* Glassmorphism */
 .glass {
-  background: rgba(255, 253, 246, 0.78);
+  background: rgba(255, 252, 245, 0.78);
   backdrop-filter: blur(14px) saturate(1.3);
   -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border-bottom: 1px solid rgba(60, 66, 88, 0.08);
+  border-bottom: 1px solid rgba(20, 32, 70, 0.08);
 }
 
-/* Dot-grid texture — slate dots on light surfaces */
+/* Dot-grid texture — navy dots on light surfaces */
 .bg-dots {
-  background-image: radial-gradient(rgba(60, 66, 88, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(20, 32, 70, 0.09) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 /* Light dots for dark hero surfaces */
 .bg-dots-light {
-  background-image: radial-gradient(rgba(255, 253, 246, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 252, 245, 0.12) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
-/* Aurora — soft lilac/periwinkle glows for dark slate sections */
+/* Aurora — saffron + green glows over deep chakra navy */
 .aurora::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(640px 320px at 15% -10%, rgba(226, 212, 224, 0.22), transparent 62%),
-    radial-gradient(560px 320px at 85% 0%, rgba(148, 154, 177, 0.28), transparent 62%),
-    radial-gradient(900px 460px at 50% 115%, rgba(93, 100, 133, 0.75), transparent 72%);
+    radial-gradient(640px 320px at 15% -10%, rgba(244, 100, 10, 0.24), transparent 62%),
+    radial-gradient(560px 320px at 85% 0%, rgba(8, 122, 61, 0.22), transparent 62%),
+    radial-gradient(900px 460px at 50% 115%, rgba(36, 64, 156, 0.85), transparent 72%);
 }
 
 /* Film grain (inline SVG turbulence — zero network cost) */
@@ -210,9 +209,9 @@
 
 /* ─── Typography effects ───────────────────────────────────── */
 
-/* Animated lilac shimmer for hero keywords (on dark slate) */
+/* Animated saffron shimmer for hero keywords (on dark navy) */
 .text-gradient-saffron {
-  background: linear-gradient(100deg, #f2e9f1 0%, #e2d4e0 35%, #b9bccb 65%, #e2d4e0 100%);
+  background: linear-gradient(100deg, #ffb25e 0%, #ff8a3d 35%, #f4640a 65%, #ffc46b 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -224,9 +223,9 @@
   50% { background-position: 100% 50%; }
 }
 
-/* Static tri-color gradient text (for light surfaces) */
+/* Static tri-color gradient text (saffron → navy → green) */
 .gradient-text {
-  background: linear-gradient(135deg, #9a7796 0%, #7c7e9d 50%, #4c5372 100%);
+  background: linear-gradient(135deg, #f4640a 0%, #1a2c6b 50%, #087a3d 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -234,7 +233,7 @@
 
 /* Hand-drawn underline flourish for headings */
 .underline-flourish {
-  background-image: linear-gradient(to right, rgba(154, 119, 150, 0.45), rgba(154, 119, 150, 0.45));
+  background-image: linear-gradient(to right, rgba(244, 100, 10, 0.45), rgba(244, 100, 10, 0.45));
   background-repeat: no-repeat;
   background-size: 100% 0.18em;
   background-position: 0 92%;
@@ -266,8 +265,8 @@
 .card-lift:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 1px 0 rgba(76, 83, 114, 0.04),
-    0 12px 32px -8px rgba(76, 83, 114, 0.2);
+    0 1px 0 rgba(26, 44, 107, 0.04),
+    0 12px 32px -8px rgba(26, 44, 107, 0.2);
 }
 
 /* Shine sweep across a card on hover */
@@ -300,20 +299,20 @@
 
 /* Conic gradient tile for the logo mark */
 .logo-tile {
-  background: conic-gradient(from 220deg at 50% 50%, #9a7796, #7c7e9d 100deg, #4c5372 200deg, #e2d4e0 300deg, #9a7796 360deg);
+  background: conic-gradient(from 220deg at 50% 50%, #f4640a, #1a2c6b 120deg, #087a3d 240deg, #ffb25e 330deg, #f4640a 360deg);
 }
 
 /* Sponsored ad card glow */
 .sponsored-glow {
   box-shadow:
-    0 0 0 1px rgba(154, 119, 150, 0.14),
-    0 2px 8px rgba(154, 119, 150, 0.08);
+    0 0 0 1px rgba(244, 100, 10, 0.14),
+    0 2px 8px rgba(244, 100, 10, 0.08);
 }
 .sponsored-glow:hover {
   box-shadow:
-    0 0 0 1px rgba(154, 119, 150, 0.28),
-    0 4px 20px rgba(154, 119, 150, 0.14),
-    0 8px 30px rgba(154, 119, 150, 0.08);
+    0 0 0 1px rgba(244, 100, 10, 0.28),
+    0 4px 20px rgba(244, 100, 10, 0.14),
+    0 8px 30px rgba(244, 100, 10, 0.08);
 }
 
 /* Stagger delays for entrance animations */

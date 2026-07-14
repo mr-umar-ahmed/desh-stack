@@ -43,11 +43,18 @@ export async function POST(req: Request) {
   const eventType = evt.type
 
   if (eventType === "user.created") {
-    const { id, email_addresses, first_name, last_name, image_url } = evt.data
+    const { id, email_addresses, first_name, last_name, image_url, unsafe_metadata } = evt.data
     const email = email_addresses[0]?.email_address
     if (!email) return NextResponse.json({ error: "No email" }, { status: 400 })
 
     const name = [first_name, last_name].filter(Boolean).join(" ") || null
+
+    // Honor the role chosen on the sign-up page. Only PUBLISHER is
+    // self-selectable — ADMIN can never be claimed through metadata.
+    const requestedRole =
+      (unsafe_metadata as { role?: string } | undefined)?.role === "PUBLISHER"
+        ? ("PUBLISHER" as const)
+        : ("USER" as const)
 
     // Check if user with this email already exists
     const existingUser = await prisma.user.findUnique({ where: { email } })
@@ -55,11 +62,17 @@ export async function POST(req: Request) {
     if (existingUser) {
       await prisma.user.update({
         where: { email },
-        data: { clerkId: id, name: name || existingUser.name, image: image_url || existingUser.image },
+        data: {
+          clerkId: id,
+          name: name || existingUser.name,
+          image: image_url || existingUser.image,
+          // Upgrade plain users to their chosen vendor role; never touch staff roles.
+          role: existingUser.role === "USER" ? requestedRole : existingUser.role,
+        },
       })
     } else {
       await prisma.user.create({
-        data: { clerkId: id, email, name, image: image_url },
+        data: { clerkId: id, email, name, image: image_url, role: requestedRole },
       })
     }
   }

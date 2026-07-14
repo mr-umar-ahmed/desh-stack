@@ -104,6 +104,7 @@ model User {
   categoryFollows   CategoryFollow[]
   vendorRequests    VendorRequest[]
   subscriptions     Subscription[]
+  upvotes           Upvote[]
 }
 
 model VendorRequest {
@@ -153,6 +154,7 @@ model Product {
   reviews      Review[]
   savedBy      SavedProduct[]
   score        ProductScore?
+  upvotes      Upvote[]
 }
 
 model PricingTier {
@@ -269,6 +271,19 @@ model AuditLog {
   createdAt  DateTime @default(now())
 
   actor      User     @relation(fields: [actorId], references: [id])
+}
+
+// Product Hunt-style upvote: one per user per product.
+model Upvote {
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@id([userId, productId])
+  @@index([productId])
 }
 
 model SavedProduct {

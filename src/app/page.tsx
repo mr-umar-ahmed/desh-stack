@@ -47,13 +47,17 @@ export default async function Home() {
           include: {
             reviews: { select: { overallRating: true } },
             score: true,
+            _count: { select: { upvotes: true } },
           },
         }),
         prisma.product.findMany({
           where: { status: "APPROVED" },
           take: 3,
           orderBy: { createdAt: "desc" },
-          include: { reviews: { select: { overallRating: true } } },
+          include: {
+            reviews: { select: { overallRating: true } },
+            _count: { select: { upvotes: true } },
+          },
         }),
         prisma.product.count({ where: { status: "APPROVED" } }),
         prisma.review.count({ where: { status: "PUBLISHED" } }),
@@ -74,7 +78,12 @@ export default async function Home() {
       return { ...product, reviewCount, averageRating }
     })
 
-  const topProducts = withRatings(products).sort((a, b) => b.averageRating - a.averageRating)
+  // Product Hunt-style ranking: community upvotes first, rating as tiebreak.
+  const topProducts = withRatings(products).sort(
+    (a, b) =>
+      (b._count?.upvotes ?? 0) - (a._count?.upvotes ?? 0) ||
+      b.averageRating - a.averageRating,
+  )
   const latestProducts = withRatings(recentProducts)
   const hasStats = totalProducts > 0 || totalReviews > 0
 
@@ -256,7 +265,7 @@ export default async function Home() {
               <h2 className="font-heading text-2xl font-bold text-ink md:text-3xl">
                 Trending Products
               </h2>
-              <p className="mt-1 text-sm text-ink/50">Highest rated software this quarter</p>
+              <p className="mt-1 text-sm text-ink/50">Most upvoted by the community</p>
             </div>
             <Link
               href="/products"
@@ -280,6 +289,7 @@ export default async function Home() {
                   pricingText={product.pricingText}
                   averageRating={product.averageRating}
                   reviewCount={product.reviewCount}
+                  upvoteCount={product._count?.upvotes ?? 0}
                 />
               </ScrollReveal>
             ))}

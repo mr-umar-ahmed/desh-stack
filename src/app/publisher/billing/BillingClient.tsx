@@ -74,7 +74,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
           }
         },
         theme: {
-          color: "#4c5372" // Brand primary (deep slate)
+          color: "#1a2c6b" // Brand primary (chakra navy)
         }
       }
 
