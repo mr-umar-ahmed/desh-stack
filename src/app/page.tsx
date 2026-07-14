@@ -99,17 +99,35 @@ export default async function Home() {
       b.averageRating - a.averageRating,
   )
 
-  const quadrantProducts = products
-    .filter((p) => p.score)
-    .map((p) => {
-      const vision = Math.min(100, Math.max(0, (p.score.visionScore / 5) * 100))
-      const execution = Math.min(100, Math.max(0, (p.score.executionScore / 5) * 100))
-      let quadrant: "Leaders" | "Challengers" | "Visionaries" | "Niche Players" = "Niche Players"
-      if (vision >= 50 && execution >= 50) quadrant = "Leaders"
-      else if (vision < 50 && execution >= 50) quadrant = "Challengers"
-      else if (vision >= 50 && execution < 50) quadrant = "Visionaries"
-      return { id: p.id, name: p.name, slug: p.slug, visionScore: vision, executionScore: execution, quadrant }
-    })
+  // Dynamic quadrant: EVERY approved product gets placed. Curated
+  // ProductScore rows (0–5 scale) win when present; otherwise placement is
+  // derived live from community signals — upvote share drives vision,
+  // average rating drives execution — so new launches appear immediately.
+  const maxUpvotes = Math.max(1, ...feed.map((p) => p._count?.upvotes ?? 0))
+  const quadrantProducts = feed.map((p) => {
+    let vision: number
+    let execution: number
+    if (p.score) {
+      vision = (p.score.visionScore / 5) * 100
+      execution = (p.score.executionScore / 5) * 100
+    } else {
+      const upvoteShare = (p._count?.upvotes ?? 0) / maxUpvotes
+      vision = 25 + upvoteShare * 65
+      execution = p.averageRating > 0 ? (p.averageRating / 5) * 100 : 40
+      // Deterministic jitter from the id so products with identical
+      // signals don't stack on the exact same pixel.
+      const hash = [...p.id].reduce((a: number, c: string) => a + c.charCodeAt(0), 0)
+      vision += (hash % 9) - 4
+      execution += ((hash >> 3) % 9) - 4
+    }
+    vision = Math.min(100, Math.max(0, vision))
+    execution = Math.min(100, Math.max(0, execution))
+    let quadrant: "Leaders" | "Challengers" | "Visionaries" | "Niche Players" = "Niche Players"
+    if (vision >= 50 && execution >= 50) quadrant = "Leaders"
+    else if (vision < 50 && execution >= 50) quadrant = "Challengers"
+    else if (vision >= 50 && execution < 50) quadrant = "Visionaries"
+    return { id: p.id, name: p.name, slug: p.slug, visionScore: vision, executionScore: execution, quadrant }
+  })
 
   const today = new Date().toLocaleDateString("en-IN", {
     weekday: "long",

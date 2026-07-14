@@ -40,6 +40,29 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
   const padding = 50
   const chartSize = 500
 
+  // Precompute pin positions (clamped inside the square) and detect label
+  // collisions — crowded pins reveal their label on hover instead of
+  // painting text over a neighbour.
+  const pins = products.map((product) => {
+    const vx = Math.min(96, Math.max(4, product.visionScore))
+    const vy = Math.min(96, Math.max(4, product.executionScore))
+    return {
+      product,
+      x: padding + (vx / 100) * chartSize,
+      y: padding + chartSize - (vy / 100) * chartSize,
+      labelLeft: vx > 62,
+      showLabel: true,
+    }
+  })
+  pins.forEach((pin, i) => {
+    for (let j = 0; j < i; j++) {
+      if (Math.abs(pin.y - pins[j].y) < 26 && Math.abs(pin.x - pins[j].x) < 120) {
+        pin.showLabel = false
+        break
+      }
+    }
+  })
+
   return (
     <div className="animate-fade-in">
       {/* Header */}
@@ -58,8 +81,8 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
           <p className="text-xs text-ink/50">Placement is computed from verified peer reviews — <span className="text-saffron font-medium">never bought or manually set.</span></p>
         </div>
 
-        {/* SVG Quadrant */}
-        <div ref={chartRef} className="relative w-full" style={{ maxWidth: chartSize + padding * 2 }}>
+        {/* SVG Quadrant — centered in the card */}
+        <div ref={chartRef} className="relative mx-auto w-full" style={{ maxWidth: chartSize + padding * 2 }}>
           <svg
             viewBox={`0 0 ${chartSize + padding * 2} ${chartSize + padding * 2}`}
             className="w-full h-auto"
@@ -76,10 +99,11 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
             <line x1={padding + chartSize / 2} y1={padding} x2={padding + chartSize / 2} y2={padding + chartSize} stroke="#4a3a30" strokeWidth="1" strokeDasharray="6 4" />
 
             {/* Quadrant Labels */}
-            <text x={padding + chartSize * 0.25} y={padding + 24} textAnchor="middle" className="fill-teal font-heading font-bold text-[14px]">Challengers</text>
-            <text x={padding + chartSize * 0.75} y={padding + 24} textAnchor="middle" className="fill-saffron font-heading font-bold text-[14px]">Leaders</text>
-            <text x={padding + chartSize * 0.25} y={padding + chartSize - 10} textAnchor="middle" className="fill-muted font-heading font-bold text-[14px]">Niche Players</text>
-            <text x={padding + chartSize * 0.75} y={padding + chartSize - 10} textAnchor="middle" className="fill-indigo font-heading font-bold text-[14px]">Visionaries</text>
+            {/* Quadrant captions are dim watermarks so pins/labels stay readable over them */}
+            <text x={padding + chartSize * 0.25} y={padding + 24} textAnchor="middle" opacity={0.4} className="fill-teal font-heading font-bold text-[14px]">Challengers</text>
+            <text x={padding + chartSize * 0.75} y={padding + 24} textAnchor="middle" opacity={0.4} className="fill-saffron font-heading font-bold text-[14px]">Leaders</text>
+            <text x={padding + chartSize * 0.25} y={padding + chartSize - 10} textAnchor="middle" opacity={0.4} className="fill-muted font-heading font-bold text-[14px]">Niche Players</text>
+            <text x={padding + chartSize * 0.75} y={padding + chartSize - 10} textAnchor="middle" opacity={0.4} className="fill-indigo font-heading font-bold text-[14px]">Visionaries</text>
 
             {/* Y-axis label */}
             <text
@@ -103,9 +127,7 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
             </text>
 
             {/* Product dots */}
-            {products.map((product) => {
-              const x = padding + (product.visionScore / 100) * chartSize
-              const y = padding + chartSize - (product.executionScore / 100) * chartSize
+            {pins.map(({ product, x, y, labelLeft, showLabel }) => {
               const isHovered = hoveredProduct?.id === product.id
               const color = QUADRANT_COLORS[product.quadrant]
 
@@ -138,10 +160,11 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
                     />
                     {/* Label */}
                     <text
-                      x={x + 12}
+                      x={labelLeft ? x - 12 : x + 12}
                       y={y + 4}
+                      textAnchor={labelLeft ? "end" : "start"}
                       className="text-[11px] font-semibold fill-ink cursor-pointer"
-                      style={{ opacity: isHovered ? 1 : 0.8 }}
+                      style={{ opacity: isHovered ? 1 : showLabel ? 0.8 : 0 }}
                       onMouseEnter={() => setHoveredProduct(product)}
                       onMouseLeave={() => setHoveredProduct(null)}
                     >
