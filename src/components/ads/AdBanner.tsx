@@ -19,7 +19,11 @@ export function AdBanner() {
   const [isAnimating, setIsAnimating] = useState(false)
   const [adBlocked, setAdBlocked] = useState(false)
   
-  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
+  // Real AdSense needs a publisher ID AND an ad-unit slot ID (created in the
+  // AdSense dashboard). Without both, we show the house sponsored rotator —
+  // never a blank Google box.
+  const bannerSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_BANNER
+  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID && !!bannerSlot
 
   const ads = sponsoredProducts
   const currentAd = ads[currentIndex]
@@ -62,6 +66,7 @@ export function AdBanner() {
             </div>
             <div className="flex-1 min-w-0 overflow-hidden">
               <GoogleAd
+                slot={bannerSlot}
                 format="horizontal"
                 responsive
                 style={{ minHeight: "60px", maxHeight: "100px" }}

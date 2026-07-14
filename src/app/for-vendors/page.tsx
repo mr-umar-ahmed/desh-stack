@@ -20,8 +20,17 @@ async function VendorStatusSection({ userId }: { userId: string }) {
     console.error("DB error in VendorStatusSection (check DATABASE_URL):", error)
   }
 
-  // Vendors / staff → straight to the publisher portal.
-  if (role === "PUBLISHER" || role === "ADMIN" || role === "MODERATOR") {
+  // Staff run the platform — they don't get vendor CTAs.
+  if (role === "ADMIN" || role === "MODERATOR") {
+    return (
+      <Link href="/admin" className="inline-flex items-center gap-2 bg-indigo text-paper font-bold text-lg px-10 py-5 rounded-2xl hover:bg-indigo/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200">
+        Go to Admin Panel <ArrowRight className="w-5 h-5" />
+      </Link>
+    )
+  }
+
+  // Vendors → straight to their portal.
+  if (role === "PUBLISHER") {
     return (
       <Link href="/publisher" className="inline-flex items-center gap-2 bg-indigo text-paper font-bold text-lg px-10 py-5 rounded-2xl hover:bg-indigo/90 transition-all shadow-lg hover:-translate-y-1 transform duration-200">
         Go to Publisher Dashboard <ArrowRight className="w-5 h-5" />

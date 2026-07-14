@@ -100,3 +100,29 @@ blocked ad and falls back to self-hosted sponsored placements.
 
 Rotate any secret that has ever been shared in plain text (Supabase password, Clerk secret,
 Razorpay secret, Resend key). `.env` is git-ignored and is **not** committed — keep it that way.
+
+## Google AdSense — turning on real ads
+
+Real Google ads render **only** when you provide both the publisher ID and
+per-placement ad-unit slot IDs. Until then, the site shows the built-in
+sponsored rotator (no blank boxes).
+
+1. Get your AdSense account approved for the domain (AdSense → Sites).
+2. Create three ad units at AdSense → Ads → By ad unit:
+   - a horizontal/display unit for the banner
+   - a square/rectangle unit for the sidebar
+   - an in-feed unit for product grids
+3. Copy each unit's slot ID (the number in `data-ad-slot`) and add to Vercel:
+
+```
+NEXT_PUBLIC_GOOGLE_ADSENSE_ID=ca-pub-5233781706511497
+NEXT_PUBLIC_ADSENSE_SLOT_BANNER=1234567890
+NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR=2345678901
+NEXT_PUBLIC_ADSENSE_SLOT_INFEED=3456789012
+```
+
+4. Redeploy. Units Google can't fill auto-collapse (no empty overlays).
+
+Tip: in your AdSense account, disable "Auto ads" for the site unless you
+want Google injecting its own anchor/vignette overlay ads on top of the
+custom placements.

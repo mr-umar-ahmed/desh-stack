@@ -1,4 +1,5 @@
-import { requireRole } from "@/lib/rbac"
+import { requireAuth } from "@/lib/rbac"
+import { redirect } from "next/navigation"
 import Link from "next/link"
 import { Building2, PlusCircle, LayoutDashboard, CreditCard } from "lucide-react"
 import { isNextControlFlowError } from "@/lib/errors"
@@ -11,12 +12,17 @@ export default async function PublisherLayout({
 }) {
   let user
   try {
-    user = await requireRole(["PUBLISHER", "ADMIN", "MODERATOR"])
+    user = await requireAuth()
   } catch (error) {
     if (isNextControlFlowError(error)) throw error
     console.error("Publisher layout failed to load (check DATABASE_URL):", error)
     return <ServiceUnavailable />
   }
+
+  // The publisher portal belongs to vendors only. Staff moderate from the
+  // admin panel; reviewers are pointed at the vendor page to opt in.
+  if (user.role === "ADMIN" || user.role === "MODERATOR") redirect("/admin")
+  if (user.role !== "PUBLISHER") redirect("/for-vendors")
 
   return (
     <div className="container mx-auto px-4 py-8 animate-fade-in">

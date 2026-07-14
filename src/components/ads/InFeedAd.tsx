@@ -13,7 +13,10 @@ import { Megaphone } from "lucide-react"
  */
 export function InFeedAd() {
   const [adBlocked, setAdBlocked] = useState(false)
-  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
+  // Requires a real ad-unit slot ID; renders nothing until one is configured
+  // so the grid never shows a blank Google box.
+  const infeedSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_INFEED
+  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID && !!infeedSlot
 
   if (!hasAdSense || adBlocked) return null
 
@@ -30,6 +33,7 @@ export function InFeedAd() {
       {/* Google Ad */}
       <div className="flex-1 min-h-[200px]">
         <GoogleAd
+          slot={infeedSlot}
           format="auto"
           responsive
           style={{ minHeight: "200px" }}

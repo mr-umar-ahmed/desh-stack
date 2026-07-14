@@ -168,6 +168,19 @@
   ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.26); }
 }
 
+/* AdSense safety net: units Google can't fill collapse instead of
+   sitting as blank boxes over the page. */
+ins.adsbygoogle[data-ad-status="unfilled"] {
+  display: none !important;
+}
+/* Google Auto-Ads containers (anchor/vignette overlays it injects into
+   <body> on its own). We only run explicitly placed ad units — these
+   overlay formats are what covered page content with a closeless box. */
+ins.adsbygoogle-noablate,
+.google-auto-placed {
+  display: none !important;
+}
+
 /* ─── Surfaces & textures ──────────────────────────────────── */
 
 /* Glassmorphism (dark) */

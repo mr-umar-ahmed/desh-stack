@@ -60,7 +60,7 @@ export function MobileNav({ isSignedIn, role }: MobileNavProps) {
                       Dashboard
                     </MobileLink>
                   )}
-                  {(role === "PUBLISHER" || role === "ADMIN" || role === "MODERATOR") && (
+                  {role === "PUBLISHER" && (
                     <MobileLink href="/publisher" icon={Building2}>
                       Publisher
                     </MobileLink>

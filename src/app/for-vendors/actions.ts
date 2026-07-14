@@ -12,6 +12,11 @@ import { redirect } from "next/navigation"
 export async function becomeVendor() {
   const user = await requireAuth()
 
+  // Staff accounts stay staff — they manage the platform, not listings.
+  if (user.role === "ADMIN" || user.role === "MODERATOR") {
+    redirect("/admin")
+  }
+
   if (user.role === "USER") {
     await prisma.user.update({
       where: { id: user.id },

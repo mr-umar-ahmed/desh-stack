@@ -16,7 +16,10 @@ export function SidebarAd() {
   const [adIndex, setAdIndex] = useState(0)
   const [isAnimating, setIsAnimating] = useState(false)
   const [adBlocked, setAdBlocked] = useState(false)
-  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
+  // Real AdSense needs a publisher ID AND an ad-unit slot ID; otherwise the
+  // house sponsored rotator shows instead of a blank Google box.
+  const sidebarSlot = process.env.NEXT_PUBLIC_ADSENSE_SLOT_SIDEBAR
+  const hasAdSense = !!process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID && !!sidebarSlot
 
   const ads = sponsoredProducts
   const ad = ads[adIndex]
@@ -51,6 +54,7 @@ export function SidebarAd() {
           {/* Google Ad */}
           <div className="px-3 pb-3">
             <GoogleAd
+              slot={sidebarSlot}
               format="rectangle"
               responsive
               style={{ minHeight: "250px" }}

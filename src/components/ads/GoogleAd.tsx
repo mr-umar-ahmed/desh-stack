@@ -50,7 +50,7 @@ export function GoogleAd({
   const pubId = process.env.NEXT_PUBLIC_GOOGLE_ADSENSE_ID
 
   useEffect(() => {
-    if (!pubId || isAdLoaded.current) return
+    if (!pubId || !slot || isAdLoaded.current) return
 
     let timeoutId: NodeJS.Timeout
 
@@ -73,9 +73,12 @@ export function GoogleAd({
     }
     
     return () => clearTimeout(timeoutId)
-  }, [pubId, onAdBlock])
+  }, [pubId, slot, onAdBlock])
 
-  if (!pubId) return null
+  // Without BOTH a publisher ID and a real ad-unit slot ID, Google can never
+  // fill the unit — pushing anyway leaves a permanent blank box overlaying
+  // content. Render nothing so callers use their house-ad fallback instead.
+  if (!pubId || !slot) return null
 
   return (
     <ins
@@ -83,10 +86,11 @@ export function GoogleAd({
       className={`adsbygoogle ${className}`}
       style={{
         display: "block",
+        overflow: "hidden",
         ...style,
       }}
       data-ad-client={pubId}
-      data-ad-slot={slot || ""}
+      data-ad-slot={slot}
       data-ad-format={format}
       data-full-width-responsive={responsive ? "true" : "false"}
     />
