@@ -34,7 +34,7 @@ export default async function AdminDashboard() {
           <Link
             key={i}
             href={stat.href}
-            className="bg-white p-5 rounded-2xl border border-indigo/10 shadow-sm hover:shadow-md hover:border-indigo/20 transition-all group"
+            className="bg-card p-5 rounded-2xl border border-indigo/10 shadow-sm hover:shadow-md hover:border-indigo/20 transition-all group"
           >
             <div className="flex items-center justify-between mb-3">
               <div className={`w-10 h-10 rounded-xl ${stat.color} flex items-center justify-center group-hover:scale-110 transition-transform`}>
@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Recent Activity */}
-      <div className="bg-white rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
+      <div className="bg-card rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
         <div className="p-5 border-b border-indigo/10 flex items-center justify-between">
           <h2 className="font-heading font-bold text-ink flex items-center gap-2">
             <Clock className="w-4 h-4 text-ink/40" />

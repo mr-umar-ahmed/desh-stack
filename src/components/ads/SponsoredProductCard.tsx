@@ -10,7 +10,7 @@ export function SponsoredProductCard({ ad }: SponsoredProductCardProps) {
   return (
     <Link
       href={ad.ctaUrl}
-      className="group relative flex flex-col rounded-2xl border border-saffron/20 bg-white p-5 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden sponsored-glow"
+      className="group relative flex flex-col rounded-2xl border border-saffron/20 bg-card p-5 shadow-sm hover:shadow-lg transition-all duration-300 hover:-translate-y-1 overflow-hidden sponsored-glow"
     >
       {/* Sponsored badge */}
       <div className="absolute top-3 right-3 flex items-center gap-1 bg-gradient-to-r from-saffron to-saffron/80 text-paper px-2.5 py-1 rounded-full shadow-sm z-10">

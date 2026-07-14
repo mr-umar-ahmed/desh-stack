@@ -46,7 +46,7 @@ export default async function SearchPage({
       </div>
 
       {products.length === 0 ? (
-        <div className="bg-white p-12 rounded-2xl border border-indigo/10 text-center shadow-sm max-w-xl mx-auto">
+        <div className="bg-card p-12 rounded-2xl border border-indigo/10 text-center shadow-sm max-w-xl mx-auto">
           <Search className="w-12 h-12 text-ink/20 mx-auto mb-4" />
           <h3 className="font-heading text-xl font-bold text-ink mb-2">No results found</h3>
           <p className="text-ink/60 mb-6">We couldn&apos;t find any software matching &quot;{query}&quot;.</p>

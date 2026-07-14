@@ -31,7 +31,7 @@ export function ProductForm({ categories }: { categories: { id: string; name: st
 
       <div className="flex flex-col gap-2">
         <label htmlFor="categoryId" className="font-bold text-ink">Category *</label>
-        <select id="categoryId" name="categoryId" required className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-white">
+        <select id="categoryId" name="categoryId" required className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-card">
           <option value="">Select a category...</option>
           {categories.map(cat => (
             <option key={cat.id} value={cat.id}>{cat.name}</option>

@@ -15,7 +15,7 @@ export default function NotFound() {
         <Link href="/" className="bg-indigo text-paper font-semibold px-6 py-3 rounded-lg hover:bg-indigo/90 transition-colors shadow-sm">
           Return Home
         </Link>
-        <Link href="/categories" className="bg-white border border-indigo/20 text-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors shadow-sm">
+        <Link href="/categories" className="bg-card border border-indigo/20 text-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors shadow-sm">
           Browse Categories
         </Link>
       </div>

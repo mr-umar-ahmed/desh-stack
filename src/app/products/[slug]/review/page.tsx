@@ -48,7 +48,7 @@ async function ReviewPageContent({ params }: ReviewPageProps) {
   if (existingReview) {
     return (
       <div className="container mx-auto px-4 py-12 max-w-2xl text-center">
-        <div className="bg-white p-8 rounded-xl border border-indigo/10 shadow-sm">
+        <div className="bg-card p-8 rounded-xl border border-indigo/10 shadow-sm">
           <h1 className="font-heading text-2xl font-bold text-ink mb-4">You&apos;ve already reviewed {product.name}</h1>
           <p className="text-ink/70 mb-6">Thank you for sharing your feedback!</p>
           <Link href="/dashboard" className="bg-indigo text-paper font-semibold px-6 py-3 rounded-lg hover:bg-indigo/90 transition-colors">
@@ -69,7 +69,7 @@ async function ReviewPageContent({ params }: ReviewPageProps) {
         <p className="text-ink/70 text-lg">Share your experience with {product.name}</p>
       </div>
 
-      <div className="bg-white p-6 md:p-8 rounded-xl border border-indigo/10 shadow-sm">
+      <div className="bg-card p-6 md:p-8 rounded-xl border border-indigo/10 shadow-sm">
         <ReviewForm productId={product.id} />
       </div>
     </div>

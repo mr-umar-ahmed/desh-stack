@@ -62,7 +62,7 @@ export default async function ProductsPage({
       </div>
 
       {/* Filters */}
-      <div className="flex flex-col md:flex-row gap-4 mb-10 bg-white p-4 rounded-xl border border-indigo/10 shadow-sm">
+      <div className="flex flex-col md:flex-row gap-4 mb-10 bg-card p-4 rounded-xl border border-indigo/10 shadow-sm">
         <form className="flex-1 relative" action="/products" method="GET">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
           <input
@@ -112,7 +112,7 @@ export default async function ProductsPage({
 
       {/* Results */}
       {enrichedProducts.length === 0 ? (
-        <div className="text-center py-20 bg-white rounded-2xl border border-indigo/10 shadow-sm">
+        <div className="text-center py-20 bg-card rounded-2xl border border-indigo/10 shadow-sm">
           <Search className="w-12 h-12 text-ink/20 mx-auto mb-4" />
           <h3 className="font-heading text-xl font-bold text-ink mb-2">No products found</h3>
           <p className="text-ink/50">Try adjusting your search or filters.</p>

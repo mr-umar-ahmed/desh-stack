@@ -85,7 +85,7 @@ async function DashboardContent() {
           { label: "Saved Products", value: savedProducts.length, icon: Bookmark, color: "text-saffron bg-saffron/5" },
           { label: "Avg Rating Given", value: avgRatingGiven.toFixed(1), icon: Star, color: "text-teal bg-teal/5" },
         ].map((stat, i) => (
-          <div key={i} className="bg-white p-5 rounded-2xl border border-indigo/10 shadow-sm flex items-center gap-4">
+          <div key={i} className="bg-card p-5 rounded-2xl border border-indigo/10 shadow-sm flex items-center gap-4">
             <div className={`w-12 h-12 rounded-xl ${stat.color} flex items-center justify-center shrink-0`}>
               <stat.icon className="w-5 h-5" />
             </div>
@@ -105,7 +105,7 @@ async function DashboardContent() {
             My Reviews
           </h2>
           {reviews.length === 0 ? (
-            <div className="text-center py-16 bg-white rounded-2xl border border-indigo/10 shadow-sm">
+            <div className="text-center py-16 bg-card rounded-2xl border border-indigo/10 shadow-sm">
               <Star className="w-12 h-12 text-ink/15 mx-auto mb-4" />
               <p className="text-ink/50 mb-4">You haven&apos;t written any reviews yet.</p>
               <Link href="/categories" className="text-indigo font-medium hover:underline text-sm">
@@ -115,7 +115,7 @@ async function DashboardContent() {
           ) : (
             <div className="flex flex-col gap-4">
               {reviews.map((review) => (
-                <div key={review.id} className="bg-white p-5 rounded-2xl border border-indigo/10 shadow-sm hover:shadow-md transition-shadow">
+                <div key={review.id} className="bg-card p-5 rounded-2xl border border-indigo/10 shadow-sm hover:shadow-md transition-shadow">
                   <div className="flex justify-between items-start mb-3">
                     <div>
                       <Link
@@ -173,7 +173,7 @@ async function DashboardContent() {
             Saved Products
           </h2>
           {savedProducts.length === 0 ? (
-            <div className="text-center py-10 bg-white rounded-2xl border border-indigo/10 shadow-sm">
+            <div className="text-center py-10 bg-card rounded-2xl border border-indigo/10 shadow-sm">
               <Bookmark className="w-10 h-10 text-ink/15 mx-auto mb-3" />
               <p className="text-ink/50 text-sm">No saved products.</p>
             </div>

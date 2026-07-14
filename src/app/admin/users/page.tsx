@@ -34,7 +34,7 @@ export default async function AdminUsersPage() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
+      <div className="bg-card rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>

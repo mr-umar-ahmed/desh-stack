@@ -29,7 +29,7 @@ export function ServiceUnavailable({
         </Link>
         <Link
           href="/products"
-          className="bg-white border border-indigo/20 text-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors shadow-sm"
+          className="bg-card border border-indigo/20 text-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors shadow-sm"
         >
           Browse Products
         </Link>

@@ -35,7 +35,7 @@ export default async function CategoriesPage() {
           <Link
             key={category.id}
             href={`/categories/${category.slug}`}
-            className={`flex items-center gap-5 p-6 rounded-2xl bg-white border border-indigo/10 shadow-sm hover:border-indigo hover:shadow-md transition-all group animate-scale-in stagger-${Math.min(i + 1, 6)}`}
+            className={`flex items-center gap-5 p-6 rounded-2xl bg-card border border-indigo/10 shadow-sm hover:border-indigo hover:shadow-md transition-all group animate-scale-in stagger-${Math.min(i + 1, 6)}`}
           >
             <div className="w-14 h-14 shrink-0 rounded-xl bg-indigo/5 flex items-center justify-center text-indigo group-hover:bg-indigo group-hover:text-paper transition-all duration-300 group-hover:scale-110 group-hover:rotate-3">
               <span className="font-bold text-xl">{category.name.charAt(0)}</span>

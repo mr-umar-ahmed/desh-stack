@@ -31,7 +31,7 @@ export default async function AdminProductsPage() {
             const reject = rejectProduct.bind(null, product.id)
 
             return (
-              <div key={product.id} className="bg-white p-6 rounded-xl border border-indigo/10 shadow-sm flex flex-col gap-4">
+              <div key={product.id} className="bg-card p-6 rounded-xl border border-indigo/10 shadow-sm flex flex-col gap-4">
                 <div className="flex justify-between items-start border-b border-indigo/10 pb-4">
                   <div>
                     <div className="flex items-center gap-3 mb-2">

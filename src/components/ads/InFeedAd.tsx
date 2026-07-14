@@ -18,7 +18,7 @@ export function InFeedAd() {
   if (!hasAdSense || adBlocked) return null
 
   return (
-    <div className="relative flex flex-col rounded-2xl border border-indigo/8 bg-white p-4 shadow-sm overflow-hidden">
+    <div className="relative flex flex-col rounded-2xl border border-indigo/8 bg-card p-4 shadow-sm overflow-hidden">
       {/* Sponsored badge */}
       <div className="flex items-center gap-1 mb-2">
         <Megaphone className="w-3 h-3 text-ink/25" />

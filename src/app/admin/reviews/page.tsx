@@ -18,7 +18,7 @@ export default async function AdminReviewsPage() {
       <p className="text-ink/60 mb-8">Approve or reject pending reviews.</p>
 
       {pendingReviews.length === 0 ? (
-        <div className="bg-white p-8 rounded-xl border border-indigo/10 text-center shadow-sm">
+        <div className="bg-card p-8 rounded-xl border border-indigo/10 text-center shadow-sm">
           <Check className="w-12 h-12 text-teal mx-auto mb-4" />
           <p className="text-ink font-medium">No pending reviews in the queue.</p>
         </div>
@@ -29,7 +29,7 @@ export default async function AdminReviewsPage() {
             const reject = rejectReview.bind(null, review.id)
 
             return (
-              <div key={review.id} className="bg-white p-6 rounded-xl border border-indigo/10 shadow-sm flex flex-col gap-4">
+              <div key={review.id} className="bg-card p-6 rounded-xl border border-indigo/10 shadow-sm flex flex-col gap-4">
                 <div className="flex justify-between items-start border-b border-indigo/10 pb-4">
                   <div>
                     <h3 className="font-bold text-lg text-ink mb-1">{review.title || 'Untitled Review'}</h3>

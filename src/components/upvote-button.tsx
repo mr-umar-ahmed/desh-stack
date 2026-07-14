@@ -69,7 +69,7 @@ export function UpvoteButton({
         className={`flex items-center gap-1 rounded-lg border px-2.5 py-1.5 text-xs font-bold transition-all ${
           upvoted
             ? "border-saffron bg-saffron text-white shadow-sm"
-            : "border-indigo/15 bg-white text-ink/70 hover:border-saffron hover:text-saffron"
+            : "border-indigo/15 bg-card text-ink/70 hover:border-saffron hover:text-saffron"
         }`}
       >
         <ChevronUp className={`h-3.5 w-3.5 ${upvoted ? "" : ""}`} strokeWidth={3} />
@@ -87,7 +87,7 @@ export function UpvoteButton({
       className={`group flex w-20 flex-col items-center gap-0.5 rounded-xl border-2 px-4 py-3 transition-all hover:-translate-y-0.5 ${
         upvoted
           ? "border-saffron bg-saffron text-white shadow-lg"
-          : "border-indigo/15 bg-white text-ink hover:border-saffron"
+          : "border-indigo/15 bg-card text-ink hover:border-saffron"
       }`}
     >
       <ChevronUp

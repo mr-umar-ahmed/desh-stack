@@ -17,7 +17,7 @@ export function Marquee({ items, className = "" }: MarqueeProps) {
       {items.map((item, i) => (
         <span
           key={i}
-          className="whitespace-nowrap rounded-full border border-indigo/10 bg-white/70 px-4 py-1.5 text-xs font-semibold tracking-wide text-ink/60"
+          className="whitespace-nowrap rounded-full border border-indigo/10 bg-card/70 px-4 py-1.5 text-xs font-semibold tracking-wide text-ink/60"
         >
           {item}
         </span>

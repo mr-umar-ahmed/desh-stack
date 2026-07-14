@@ -22,7 +22,7 @@ export default async function PublisherLayout({
     <div className="container mx-auto px-4 py-8 animate-fade-in">
       <div className="flex flex-col md:flex-row gap-8">
         <aside className="w-full md:w-72 shrink-0">
-          <div className="bg-white p-6 rounded-2xl border border-indigo/10 shadow-sm sticky top-24">
+          <div className="bg-card p-6 rounded-2xl border border-indigo/10 shadow-sm sticky top-24">
             <div className="flex items-center gap-3 mb-6 pb-4 border-b border-indigo/10">
               <div className="w-10 h-10 rounded-xl bg-saffron/10 flex items-center justify-center text-saffron">
                 <Building2 className="w-5 h-5" />

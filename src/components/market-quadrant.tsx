@@ -19,10 +19,10 @@ interface MarketQuadrantProps {
 }
 
 const QUADRANT_COLORS: Record<string, string> = {
-  "Leaders": "#f4640a",
-  "Challengers": "#087a3d",
-  "Visionaries": "#1a2c6b",
-  "Niche Players": "#78716c",
+  "Leaders": "#ff6d29",
+  "Challengers": "#34d399",
+  "Visionaries": "#bababa",
+  "Niche Players": "#6b625c",
 }
 
 function getQuadrant(vision: number, execution: number): QuadrantProduct["quadrant"] {
@@ -66,14 +66,14 @@ export function MarketQuadrant({ products, title = "This Quarter's Market Quadra
             style={{ maxHeight: "600px" }}
           >
             {/* Background quadrants */}
-            <rect x={padding} y={padding} width={chartSize / 2} height={chartSize / 2} fill="#faf3e6" stroke="#efe4cf" strokeWidth="1" />
-            <rect x={padding + chartSize / 2} y={padding} width={chartSize / 2} height={chartSize / 2} fill="#fffcf5" stroke="#efe4cf" strokeWidth="1" />
-            <rect x={padding} y={padding + chartSize / 2} width={chartSize / 2} height={chartSize / 2} fill="#f5ecdc" stroke="#efe4cf" strokeWidth="1" />
-            <rect x={padding + chartSize / 2} y={padding + chartSize / 2} width={chartSize / 2} height={chartSize / 2} fill="#faf3e6" stroke="#efe4cf" strokeWidth="1" />
+            <rect x={padding} y={padding} width={chartSize / 2} height={chartSize / 2} fill="#221c19" stroke="#302722" strokeWidth="1" />
+            <rect x={padding + chartSize / 2} y={padding} width={chartSize / 2} height={chartSize / 2} fill="#1e1917" stroke="#302722" strokeWidth="1" />
+            <rect x={padding} y={padding + chartSize / 2} width={chartSize / 2} height={chartSize / 2} fill="#261f1b" stroke="#302722" strokeWidth="1" />
+            <rect x={padding + chartSize / 2} y={padding + chartSize / 2} width={chartSize / 2} height={chartSize / 2} fill="#221c19" stroke="#302722" strokeWidth="1" />
 
             {/* Dotted center lines */}
-            <line x1={padding} y1={padding + chartSize / 2} x2={padding + chartSize} y2={padding + chartSize / 2} stroke="#cbb894" strokeWidth="1" strokeDasharray="6 4" />
-            <line x1={padding + chartSize / 2} y1={padding} x2={padding + chartSize / 2} y2={padding + chartSize} stroke="#cbb894" strokeWidth="1" strokeDasharray="6 4" />
+            <line x1={padding} y1={padding + chartSize / 2} x2={padding + chartSize} y2={padding + chartSize / 2} stroke="#4a3a30" strokeWidth="1" strokeDasharray="6 4" />
+            <line x1={padding + chartSize / 2} y1={padding} x2={padding + chartSize / 2} y2={padding + chartSize} stroke="#4a3a30" strokeWidth="1" strokeDasharray="6 4" />
 
             {/* Quadrant Labels */}
             <text x={padding + chartSize * 0.25} y={padding + 24} textAnchor="middle" className="fill-teal font-heading font-bold text-[14px]">Challengers</text>

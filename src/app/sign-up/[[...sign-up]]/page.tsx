@@ -31,7 +31,7 @@ export default async function SignUpPage({
             className={`flex flex-col items-center text-center gap-1.5 p-4 rounded-xl border transition-all ${
               !isVendor
                 ? "border-indigo bg-indigo/5 shadow-sm"
-                : "border-indigo/10 bg-white hover:border-indigo/30"
+                : "border-indigo/10 bg-card hover:border-indigo/30"
             }`}
           >
             <Star className={`w-5 h-5 ${!isVendor ? "text-indigo" : "text-ink/40"}`} />
@@ -43,7 +43,7 @@ export default async function SignUpPage({
             className={`flex flex-col items-center text-center gap-1.5 p-4 rounded-xl border transition-all ${
               isVendor
                 ? "border-saffron bg-saffron/5 shadow-sm"
-                : "border-indigo/10 bg-white hover:border-saffron/30"
+                : "border-indigo/10 bg-card hover:border-saffron/30"
             }`}
           >
             <Building2 className={`w-5 h-5 ${isVendor ? "text-saffron" : "text-ink/40"}`} />

@@ -28,7 +28,7 @@ export function ProductCard({
   return (
     <Link
       href={`/products/${slug}`}
-      className="group card-lift shine relative flex h-full flex-col justify-between rounded-2xl bg-white p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]"
+      className="group card-lift shine relative flex h-full flex-col justify-between rounded-2xl bg-card p-6 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)]"
     >
       <div className="absolute inset-0 rounded-2xl border border-indigo/10 transition-colors group-hover:border-indigo/30" />
       <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-indigo/[0.02] to-transparent opacity-0 transition-opacity group-hover:opacity-100" />

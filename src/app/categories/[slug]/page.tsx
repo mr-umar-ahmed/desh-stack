@@ -75,7 +75,7 @@ export default async function CategoryDetails({ params }: CategoryPageProps) {
       </div>
 
       {products.length === 0 ? (
-        <div className="py-12 text-center bg-white rounded-xl border border-indigo/10">
+        <div className="py-12 text-center bg-card rounded-xl border border-indigo/10">
           <p className="text-ink/60 mb-4">No products found in this category yet.</p>
           <Link href="/for-vendors" className="text-indigo font-medium hover:underline">
             Are you a vendor? List your product.

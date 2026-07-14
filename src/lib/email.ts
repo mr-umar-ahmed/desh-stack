@@ -18,7 +18,7 @@ export async function sendVendorApprovedEmail(email: string, name: string) {
           <p>Your publisher account on DeshStack has been approved.</p>
           <p>You can now log in, upgrade your plan if needed, and start listing your software products for Indian businesses to discover.</p>
           <br/>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard" style="background-color: #1a2c6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/dashboard" style="background-color: #ff6d29; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
             Go to Dashboard
           </a>
         </div>
@@ -41,7 +41,7 @@ export async function sendProductApprovedEmail(email: string, productName: strin
           <p>Your product <strong>${productName}</strong> has been approved by our moderation team.</p>
           <p>It is now live on DeshStack and visible to thousands of Indian businesses.</p>
           <br/>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/products/${productSlug}" style="background-color: #1a2c6b; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/products/${productSlug}" style="background-color: #ff6d29; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">
             View Your Product
           </a>
         </div>

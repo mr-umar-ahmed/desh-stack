@@ -14,7 +14,7 @@ export default async function AdminVendorsPage() {
       <h1 className="font-heading text-3xl font-bold text-ink mb-2">Vendor Requests</h1>
       <p className="text-ink/60 mb-8">Review and manage vendor registration requests.</p>
 
-      <div className="bg-white rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
+      <div className="bg-card rounded-2xl border border-indigo/10 shadow-sm overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-left border-collapse">
             <thead>

@@ -16,7 +16,7 @@ export default async function BillingPage() {
         <p className="text-ink/70">Manage your subscription and upgrade to premium features.</p>
       </div>
 
-      <div className="mb-8 p-6 bg-white rounded-xl border border-indigo/10 shadow-sm flex items-center justify-between">
+      <div className="mb-8 p-6 bg-card rounded-xl border border-indigo/10 shadow-sm flex items-center justify-between">
         <div>
           <p className="text-sm font-bold text-ink/60 uppercase tracking-wider mb-1">Current Plan</p>
           <p className="text-2xl font-bold text-indigo">{subscription?.plan || "FREE"}</p>

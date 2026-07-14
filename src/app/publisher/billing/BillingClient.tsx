@@ -74,7 +74,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
           }
         },
         theme: {
-          color: "#1a2c6b" // Brand primary (chakra navy)
+          color: "#ff6d29" // Brand primary (ember orange)
         }
       }
 
@@ -101,7 +101,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Growth Plan */}
-        <div className="bg-white p-8 rounded-xl border border-indigo/10 shadow-sm flex flex-col relative overflow-hidden">
+        <div className="bg-card p-8 rounded-xl border border-indigo/10 shadow-sm flex flex-col relative overflow-hidden">
           {currentPlan === "GROWTH" && (
             <div className="absolute top-0 right-0 bg-indigo text-paper text-xs font-bold px-3 py-1 rounded-bl-lg">
               ACTIVE
@@ -129,7 +129,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
         {/* Scale Plan */}
         <div className="bg-indigo p-8 rounded-xl border border-indigo shadow-md flex flex-col relative overflow-hidden">
           {currentPlan === "SCALE" && (
-            <div className="absolute top-0 right-0 bg-saffron text-indigo text-xs font-bold px-3 py-1 rounded-bl-lg">
+            <div className="absolute top-0 right-0 bg-saffron text-paper text-xs font-bold px-3 py-1 rounded-bl-lg">
               ACTIVE
             </div>
           )}
@@ -147,7 +147,7 @@ export function BillingClient({ currentPlan }: { currentPlan: string }) {
           <button 
             onClick={() => handleUpgrade("SCALE")}
             disabled={loading === "SCALE" || currentPlan === "SCALE"}
-            className="w-full bg-saffron text-indigo font-bold py-3 rounded-lg hover:bg-saffron/90 transition-colors disabled:opacity-50"
+            className="w-full bg-saffron text-paper font-bold py-3 rounded-lg hover:bg-saffron/90 transition-colors disabled:opacity-50"
           >
             {loading === "SCALE" ? "Processing..." : (currentPlan === "SCALE" ? "Current Plan" : "Upgrade to Scale")}
           </button>

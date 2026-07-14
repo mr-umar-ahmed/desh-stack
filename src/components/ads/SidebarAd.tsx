@@ -38,7 +38,7 @@ export function SidebarAd() {
   if (hasAdSense && !adBlocked) {
     return (
       <div className="sticky top-24">
-        <div className="rounded-2xl border border-indigo/8 bg-white overflow-hidden shadow-sm">
+        <div className="rounded-2xl border border-indigo/8 bg-card overflow-hidden shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between px-4 pt-3 pb-2">
             <div className="flex items-center gap-1.5">

@@ -56,7 +56,7 @@ export function ReviewForm({ productId }: { productId: string }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="flex flex-col gap-2">
           <label htmlFor="companySize" className="font-bold text-ink">Company Size (Optional)</label>
-          <select id="companySize" name="companySize" className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-white">
+          <select id="companySize" name="companySize" className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-card">
             <option value="">Select size...</option>
             <option value="JUST_ME">Just Me</option>
             <option value="SMALL_1_49">1-49 employees</option>
@@ -67,7 +67,7 @@ export function ReviewForm({ productId }: { productId: string }) {
         </div>
         <div className="flex flex-col gap-2">
           <label htmlFor="usageDuration" className="font-bold text-ink">Usage Duration (Optional)</label>
-          <select id="usageDuration" name="usageDuration" className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-white">
+          <select id="usageDuration" name="usageDuration" className="border border-indigo/20 rounded-md p-3 focus:ring-2 focus:ring-indigo outline-none bg-card">
             <option value="">Select duration...</option>
             <option value="LESS_THAN_6_MONTHS">Less than 6 months</option>
             <option value="SIX_TO_12_MONTHS">6-12 months</option>

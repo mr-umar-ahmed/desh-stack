@@ -5,25 +5,27 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ─────────────────────────────────────────────────────────────
-   DeshStack Design System — "Tricolor Premium"
-   A proudly Indian identity: warm ivory paper, deep chakra navy,
-   true saffron energy, and India-green trust signals. Premium,
-   warm, and instantly recognizable to Indian users.
+   DeshStack Design System — "Ember Dark"
+   Product Hunt-style dark theme from the Arounda reference:
+   near-black #161316, warm brown #453027, electric orange
+   #FF6D29, silver #BABABA, white #FFFFFF.
+   The site is dark-first: paper = dark surface, ink = light text.
    NOTE: these MUST live in @theme for Tailwind v4 to generate
    the bg-, text-, border-, and fill- utilities used across the app.
-   Token names are legacy roles: indigo = primary dark,
-   saffron = accent, teal = trust accent.
+   Token names are legacy roles: indigo = primary accent (orange),
+   saffron = accent (orange), teal = trust accent (mint).
    ───────────────────────────────────────────────────────────── */
 @theme {
   /* Brand palette */
-  --color-paper: #fffcf5;
-  --color-paper-2: #f9efdd;
-  --color-ink: #142046;
-  --color-indigo: #1a2c6b;
-  --color-indigo-2: #24409c;
-  --color-saffron: #f4640a;
-  --color-saffron-2: #c94d04;
-  --color-teal: #087a3d;
+  --color-paper: #161316;
+  --color-paper-2: #201a17;
+  --color-ink: #f6f1ec;
+  --color-cocoa: #453027;
+  --color-indigo: #ff6d29;
+  --color-indigo-2: #ff8b52;
+  --color-saffron: #ff6d29;
+  --color-saffron-2: #e0561c;
+  --color-teal: #34d399;
 
   /* Motion */
   --animate-fade-in: fade-in 0.6s ease-out forwards;
@@ -51,8 +53,8 @@
     50% { transform: translateY(-12px); }
   }
   @keyframes pulse-glow {
-    0%, 100% { box-shadow: 0 0 20px rgba(244, 100, 10, 0.18); }
-    50% { box-shadow: 0 0 40px rgba(244, 100, 10, 0.34); }
+    0%, 100% { box-shadow: 0 0 20px rgba(255, 109, 41, 0.18); }
+    50% { box-shadow: 0 0 40px rgba(255, 109, 41, 0.34); }
   }
   @keyframes scale-in {
     from { opacity: 0; transform: scale(0.95); }
@@ -96,46 +98,47 @@
 }
 
 :root {
-  --background: #fffcf5;
-  --foreground: #142046;
-  --card: #ffffff;
-  --card-foreground: #142046;
-  --popover: #ffffff;
-  --popover-foreground: #142046;
-  --primary: #1a2c6b;
-  --primary-foreground: #ffffff;
-  --secondary: #f9efdd;
-  --secondary-foreground: #1a2c6b;
-  --muted: #f9efdd;
-  --muted-foreground: #78716c;
-  --accent: #f4640a;
-  --accent-foreground: #ffffff;
-  --destructive: #dc2626;
-  --border: #efe4cf;
-  --input: #efe4cf;
-  --ring: #087a3d;
+  --background: #161316;
+  --foreground: #f6f1ec;
+  --card: #1e1917;
+  --card-foreground: #f6f1ec;
+  --popover: #241d1a;
+  --popover-foreground: #f6f1ec;
+  --primary: #ff6d29;
+  --primary-foreground: #161316;
+  --secondary: #2a211d;
+  --secondary-foreground: #f6f1ec;
+  --muted: #2a211d;
+  --muted-foreground: #bababa;
+  --accent: #ff6d29;
+  --accent-foreground: #161316;
+  --destructive: #f87171;
+  --border: #302722;
+  --input: #302722;
+  --ring: #ff6d29;
   --radius: 0.5rem;
 }
 
+/* The app is dark-first; .dark mirrors :root for compatibility. */
 .dark {
-  --background: #0d1530;
-  --foreground: #fffcf5;
-  --card: #1a2c6b;
-  --card-foreground: #fffcf5;
-  --popover: #1a2c6b;
-  --popover-foreground: #fffcf5;
-  --primary: #ff8a3d;
-  --primary-foreground: #142046;
-  --secondary: #24409c;
-  --secondary-foreground: #ffffff;
-  --muted: #24409c;
-  --muted-foreground: #a9b4d6;
-  --accent: #22c55e;
-  --accent-foreground: #142046;
+  --background: #161316;
+  --foreground: #f6f1ec;
+  --card: #1e1917;
+  --card-foreground: #f6f1ec;
+  --popover: #241d1a;
+  --popover-foreground: #f6f1ec;
+  --primary: #ff6d29;
+  --primary-foreground: #161316;
+  --secondary: #2a211d;
+  --secondary-foreground: #f6f1ec;
+  --muted: #2a211d;
+  --muted-foreground: #bababa;
+  --accent: #ff6d29;
+  --accent-foreground: #161316;
   --destructive: #f87171;
-  --border: #24409c;
-  --input: #24409c;
-  --ring: #ff8a3d;
+  --border: #302722;
+  --input: #302722;
+  --ring: #ff6d29;
 }
 
 @layer base {
@@ -147,54 +150,55 @@
   }
   html {
     @apply font-sans scroll-smooth;
+    color-scheme: dark;
   }
   ::selection {
-    background-color: rgba(244, 100, 10, 0.22);
-    color: #1a2c6b;
+    background-color: rgba(255, 109, 41, 0.35);
+    color: #ffffff;
   }
   /* Refined scrollbar */
   ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb {
-    background: rgba(26, 44, 107, 0.2);
+    background: rgba(255, 255, 255, 0.14);
     border-radius: 8px;
     border: 2px solid transparent;
     background-clip: content-box;
   }
-  ::-webkit-scrollbar-thumb:hover { background-color: rgba(26, 44, 107, 0.35); }
+  ::-webkit-scrollbar-thumb:hover { background-color: rgba(255, 255, 255, 0.26); }
 }
 
 /* ─── Surfaces & textures ──────────────────────────────────── */
 
-/* Glassmorphism */
+/* Glassmorphism (dark) */
 .glass {
-  background: rgba(255, 252, 245, 0.78);
-  backdrop-filter: blur(14px) saturate(1.3);
-  -webkit-backdrop-filter: blur(14px) saturate(1.3);
-  border-bottom: 1px solid rgba(20, 32, 70, 0.08);
+  background: rgba(22, 19, 22, 0.78);
+  backdrop-filter: blur(14px) saturate(1.2);
+  -webkit-backdrop-filter: blur(14px) saturate(1.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-/* Dot-grid texture — navy dots on light surfaces */
+/* Dot-grid texture — faint light dots on dark surfaces */
 .bg-dots {
-  background-image: radial-gradient(rgba(20, 32, 70, 0.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px);
   background-size: 22px 22px;
 }
-/* Light dots for dark hero surfaces */
 .bg-dots-light {
-  background-image: radial-gradient(rgba(255, 252, 245, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
   background-size: 26px 26px;
 }
 
-/* Aurora — saffron + green glows over deep chakra navy */
+/* Aurora — ember glow: orange light bleeding through warm brown,
+   straight from the Arounda reference gradient */
 .aurora::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    radial-gradient(640px 320px at 15% -10%, rgba(244, 100, 10, 0.24), transparent 62%),
-    radial-gradient(560px 320px at 85% 0%, rgba(8, 122, 61, 0.22), transparent 62%),
-    radial-gradient(900px 460px at 50% 115%, rgba(36, 64, 156, 0.85), transparent 72%);
+    radial-gradient(640px 340px at 12% -10%, rgba(255, 109, 41, 0.22), transparent 62%),
+    radial-gradient(560px 320px at 88% 5%, rgba(69, 48, 39, 0.9), transparent 65%),
+    radial-gradient(900px 460px at 50% 115%, rgba(255, 109, 41, 0.12), transparent 72%);
 }
 
 /* Film grain (inline SVG turbulence — zero network cost) */
@@ -203,15 +207,16 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.05;
+  opacity: 0.06;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
 /* ─── Typography effects ───────────────────────────────────── */
 
-/* Animated saffron shimmer for hero keywords (on dark navy) */
+/* Animated ember gradient for hero keywords (white → orange, like
+   the "Neue Montreal" specimen in the reference) */
 .text-gradient-saffron {
-  background: linear-gradient(100deg, #ffb25e 0%, #ff8a3d 35%, #f4640a 65%, #ffc46b 100%);
+  background: linear-gradient(100deg, #ffffff 0%, #ffc7a6 35%, #ff8b52 65%, #ff6d29 100%);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   background-clip: text;
@@ -223,17 +228,17 @@
   50% { background-position: 100% 50%; }
 }
 
-/* Static tri-color gradient text (saffron → navy → green) */
+/* Static gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #f4640a 0%, #1a2c6b 50%, #087a3d 100%);
+  background: linear-gradient(135deg, #ff6d29 0%, #ffb28a 50%, #ffffff 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* Hand-drawn underline flourish for headings */
+/* Underline flourish for headings */
 .underline-flourish {
-  background-image: linear-gradient(to right, rgba(244, 100, 10, 0.45), rgba(244, 100, 10, 0.45));
+  background-image: linear-gradient(to right, rgba(255, 109, 41, 0.5), rgba(255, 109, 41, 0.5));
   background-repeat: no-repeat;
   background-size: 100% 0.18em;
   background-position: 0 92%;
@@ -265,11 +270,12 @@
 .card-lift:hover {
   transform: translateY(-4px);
   box-shadow:
-    0 1px 0 rgba(26, 44, 107, 0.04),
-    0 12px 32px -8px rgba(26, 44, 107, 0.2);
+    0 1px 0 rgba(0, 0, 0, 0.3),
+    0 12px 32px -8px rgba(0, 0, 0, 0.55),
+    0 0 0 1px rgba(255, 109, 41, 0.12);
 }
 
-/* Shine sweep across a card on hover */
+/* Shine sweep across a card on hover (subtle on dark) */
 .shine {
   position: relative;
   overflow: hidden;
@@ -282,7 +288,7 @@
   width: 45%;
   height: 100%;
   transform: skewX(-22deg);
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
   transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
   pointer-events: none;
 }
@@ -299,20 +305,20 @@
 
 /* Conic gradient tile for the logo mark */
 .logo-tile {
-  background: conic-gradient(from 220deg at 50% 50%, #f4640a, #1a2c6b 120deg, #087a3d 240deg, #ffb25e 330deg, #f4640a 360deg);
+  background: conic-gradient(from 220deg at 50% 50%, #ff6d29, #453027 130deg, #161316 220deg, #ff8b52 320deg, #ff6d29 360deg);
 }
 
 /* Sponsored ad card glow */
 .sponsored-glow {
   box-shadow:
-    0 0 0 1px rgba(244, 100, 10, 0.14),
-    0 2px 8px rgba(244, 100, 10, 0.08);
+    0 0 0 1px rgba(255, 109, 41, 0.18),
+    0 2px 8px rgba(255, 109, 41, 0.08);
 }
 .sponsored-glow:hover {
   box-shadow:
-    0 0 0 1px rgba(244, 100, 10, 0.28),
-    0 4px 20px rgba(244, 100, 10, 0.14),
-    0 8px 30px rgba(244, 100, 10, 0.08);
+    0 0 0 1px rgba(255, 109, 41, 0.35),
+    0 4px 20px rgba(255, 109, 41, 0.16),
+    0 8px 30px rgba(255, 109, 41, 0.08);
 }
 
 /* Stagger delays for entrance animations */

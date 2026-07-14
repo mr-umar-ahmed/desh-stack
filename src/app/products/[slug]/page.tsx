@@ -86,7 +86,7 @@ export default async function ProductDetails({ params }: ProductPageProps) {
         </Link>
         
         <div className="flex flex-col md:flex-row gap-8 items-start">
-          <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-2xl bg-white border-2 border-indigo/10 flex items-center justify-center text-4xl font-bold text-indigo overflow-hidden shadow-sm">
+          <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 rounded-2xl bg-card border-2 border-indigo/10 flex items-center justify-center text-4xl font-bold text-indigo overflow-hidden shadow-sm">
             {product.logoUrl ? (
               <img src={product.logoUrl} alt={`${product.name} logo`} className="h-full w-full object-cover" />
             ) : (
@@ -113,12 +113,12 @@ export default async function ProductDetails({ params }: ProductPageProps) {
                 <a href={product.website ?? "#"} target="_blank" rel="noopener noreferrer" className="bg-indigo text-paper font-semibold px-6 py-3 rounded-lg hover:bg-indigo/90 transition-colors text-center shadow-sm">
                   Visit Website
                 </a>
-                <Link href={`/products/${product.slug}/review`} className="bg-white text-indigo border border-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors text-center">
+                <Link href={`/products/${product.slug}/review`} className="bg-card text-indigo border border-indigo font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors text-center">
                   Write a Review
                 </Link>
                 {clerkUser && (
                   <form action={toggleSave}>
-                    <button type="submit" className="w-full flex items-center justify-center gap-2 bg-white text-ink border border-indigo/20 font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors text-center mt-2">
+                    <button type="submit" className="w-full flex items-center justify-center gap-2 bg-card text-ink border border-indigo/20 font-semibold px-6 py-3 rounded-lg hover:bg-indigo/5 transition-colors text-center mt-2">
                       {isSaved ? <BookmarkCheck className="w-5 h-5 text-indigo" /> : <BookmarkPlus className="w-5 h-5" />}
                       {isSaved ? "Saved" : "Save for later"}
                     </button>
@@ -175,7 +175,7 @@ export default async function ProductDetails({ params }: ProductPageProps) {
           <section>
             <h2 className="font-heading text-2xl font-bold text-ink mb-6 pb-2 border-b border-indigo/10">Reviews</h2>
             {product.reviews.length === 0 ? (
-              <div className="text-center py-12 bg-white rounded-xl border border-indigo/10">
+              <div className="text-center py-12 bg-card rounded-xl border border-indigo/10">
                 <p className="text-ink/60 mb-4">No reviews yet. Be the first to review this product!</p>
                 <Link href={`/products/${product.slug}/review`} className="bg-indigo text-paper font-semibold px-6 py-3 rounded-lg hover:bg-indigo/90 transition-colors inline-block">
                   Write a Review
@@ -184,7 +184,7 @@ export default async function ProductDetails({ params }: ProductPageProps) {
             ) : (
               <div className="flex flex-col gap-6">
                 {product.reviews.map(review => (
-                  <div key={review.id} className="bg-white p-6 rounded-xl border border-indigo/10 shadow-sm">
+                  <div key={review.id} className="bg-card p-6 rounded-xl border border-indigo/10 shadow-sm">
                     <div className="flex justify-between items-start mb-4">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-indigo/10 flex items-center justify-center text-indigo font-bold">
@@ -251,7 +251,7 @@ export default async function ProductDetails({ params }: ProductPageProps) {
         </div>
         
         <div>
-          <div className="bg-white p-6 rounded-xl border border-indigo/10 shadow-sm sticky top-24">
+          <div className="bg-card p-6 rounded-xl border border-indigo/10 shadow-sm sticky top-24">
             <h3 className="font-heading font-bold text-lg text-ink mb-4 pb-2 border-b border-indigo/10">Product Highlights</h3>
             {/* Mock highlights */}
             <ul className="space-y-3 mb-6">
